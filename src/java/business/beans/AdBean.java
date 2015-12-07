@@ -23,7 +23,7 @@ public class AdBean implements AdBeanLocal {
     public JSONArray getAdListData(String location, String product) {
         JSONArray ja = new JSONArray();
         try {
-            JSONObject jo = null;
+            JSONObject jo;
 
             for (int i = 0; i < 10; i++) {
                 jo = new JSONObject();
