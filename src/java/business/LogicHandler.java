@@ -10,5 +10,5 @@ package business;
  * @author Christian
  */
 public class LogicHandler {
-    
+    //här ska logik vara hehe
 }
