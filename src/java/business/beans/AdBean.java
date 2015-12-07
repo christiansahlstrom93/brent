@@ -23,8 +23,10 @@ public class AdBean implements AdBeanLocal {
     public JSONArray getAdListData(String location, String product) {
         JSONArray ja = new JSONArray();
         try {
+            JSONObject jo = null;
+
             for (int i = 0; i < 10; i++) {
-                JSONObject jo = new JSONObject();
+                jo = new JSONObject();
                 jo.put("headermessage", "Du letar efter " + product + " i " + location);
                 jo.put("title", product);
                 jo.put("description", "Mycket fin borr i sina bästa dagar. Uthyres till svenskar endast."
