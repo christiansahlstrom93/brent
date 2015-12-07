@@ -39,7 +39,6 @@ public class AdBean implements AdBeanLocal {
             }
             return ja;
         } catch (JSONException ex) {
-            Logger.getLogger(AdBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;
