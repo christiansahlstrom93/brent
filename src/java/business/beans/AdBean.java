@@ -5,8 +5,6 @@
  */
 package business.beans;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +21,7 @@ public class AdBean implements AdBeanLocal {
     public JSONArray getAdListData(String location, String product) {
         JSONArray ja = new JSONArray();
         try {
-            JSONObject jo = null;
+            JSONObject jo;
 
             for (int i = 0; i < 10; i++) {
                 jo = new JSONObject();
@@ -39,9 +37,8 @@ public class AdBean implements AdBeanLocal {
             }
             return ja;
         } catch (JSONException ex) {
-            Logger.getLogger(AdBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         return null;
     }
 }
