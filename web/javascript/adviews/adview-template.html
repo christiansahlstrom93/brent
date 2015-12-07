@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vi lånar ut saker vi heter brent</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="../jquery.js"></script>
+        <script src="../bootstrap.min.js"></script>
+        <script src="../knockout.js"></script>
+        <link rel="stylesheet" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" href="adstyles.css">
+        <script src="adview-model.js"></script>
+    </head>
+
+    <body id="body">
+        <script>
+            adrequest();
+        </script>
+
+        <nav id="nav" class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand"><img src="http://blogs.fasos.maastrichtuniversity.nl/logoimago/mpiersotte/wp-content/uploads/sites/139/2015/04/mixed-logo.jpg" alt="Dispute Bills"></a>
+                </div>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input id="product" type="text" class="form-control" placeholder="Exempel: borrmaskin">
+                        <input id="location" type="text" class="form-control" placeholder="Exempel: Malmö">
+                    </div>
+                    <button type="submit" class="btn btn-default" data-bind="click: searchAds">Sök</button>
+                </form>
+            </div>
+        </nav>
+
+        <div class="container" id="border-div">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span10">
+                        <div data-bind="visible: showList">
+                            <br>
+                            <section data-bind="foreach: {data: ads}">
+                                <div class = "row">
+                                    <div class = "col-sm-6 col-md-3">
+                                        <a href = "#" class = "thumbnail">
+                                            <img data-bind="attr:{src: imageURL}, click: gotoAd" alt = "">
+                                        </a>
+                                    </div>
+                                    <div class = "caption">
+                                        <p id="location-link" data-bind="text: location"></p>
+                                        <h4 id="title" data-bind="text: title"></h4>
+                                        <p id="description" data-bind="text: description"></p>
+                                    </div>
+                                </div>
+                                <hr>
+                            </section>
+                        </div>
+
+                        <div data-bind="visible: displayAd">
+                            <br>
+                            <p><a href="#" class="btn btn-primary" role="button" data-bind="click: goBack">Tillbaka</a>
+                            <section id="ad" data-bind="foreach: {data: ad}">
+                                <div data-bind="visible:isMobile " class="col-sm-6 col-md-3">
+                                    <a href="#" class="thumbnail" >
+                                        <img data-bind="attr:{src: imageURL}, click: gotoAd" alt = "">
+                                    </a>
+                                </div>
+                                <div data-bind="visible: isComputer" class="container">
+                                    <div class="row">
+                                        <img class="thumbnail" data-bind="attr:{src: imageURL}">
+                                    </div>
+                                </div>
+                                <div class = "caption">
+                                    <p id="location-link-ad" data-bind="text: location"></p>
+                                    <div class="jumbotron">
+                                        <h2 id="title" data-bind="text: title"></h2>
+                                        <h5 id="description" data-bind="text: description"></h5>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

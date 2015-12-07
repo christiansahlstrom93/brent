@@ -1,0 +1,39 @@
+section#ad .thumbnail{
+    margin: 0 auto;
+}
+
+#body {
+    background:gainsboro;
+}
+
+#border-div {
+    background:white;
+}
+
+#description {
+    text-align: center;
+}
+
+#title {
+    text-align: center;
+}
+
+#location-link {
+    color: #0000CD;
+}
+
+#location-link-ad {
+    color: #0000CD;
+    text-align: center;
+}
+
+#nav {
+    background:whitesmoke;
+}
+
+.navbar-brand>img {
+    max-height: 100%;
+    height: 100%;
+    width: auto;
+    margin: 0 auto;
+}
