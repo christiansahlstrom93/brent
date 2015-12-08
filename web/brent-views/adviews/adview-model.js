@@ -11,6 +11,9 @@ function adrequest() {
     self.headerMessage = ko.observable();
     self.isMobile = ko.observable(mobilecheck());
     self.isComputer = ko.observable(!mobilecheck());
+    self.isLoggedIn = ko.observable(checkCookie());
+    self.loginClass = ko.observable(className());
+    self.username = ko.observable(getCookie("username"));
 
     $.ajax({
         url: "../../AdServlet",
@@ -43,6 +46,29 @@ function adrequest() {
                     self.goBack = function () {
                         self.showList(true);
                         self.displayAd(false);
+                    };
+
+                    self.login = function () {
+                        var usr = document.getElementById("username").value;
+                        var pass = document.getElementById("password").value;
+
+                        //skicka ajax till mauritz
+
+                        //godkänd response
+                        setCookie("username", usr, 365);
+                        isLoggedIn(true);
+                        username(usr);
+                    };
+
+                    self.logout = function () {
+                        setCookie("username", "", 365);
+                        isLoggedIn(false);
+                        username("");
+                    };
+
+                    self.createAd = function () {
+                        localStorage.setItem("username",getCookie("username"));
+                        window.open("../profile-views/ad/newad.html", "_self");
                     };
                 }
                 ko.applyBindings(AdViewModel());
@@ -78,4 +104,44 @@ function getLocation() {
     $.get("http://ipinfo.io", function (response) {
         console.log(response);
     }, "jsonp");
+}
+
+function checkCookie() {
+    var state = false;
+    var user = getCookie("username");
+    if (user != "") {
+        state = true;
+    }
+    return state;
+}
+
+function className() {
+    var str;
+
+    if (mobilecheck()) {
+        str = "rightPhone";
+    } else {
+        str = "rightWeb";
+    }
+    return str;
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ')
+            c = c.substring(1);
+        if (c.indexOf(name) == 0)
+            return c.substring(name.length, c.length);
+    }
+    return "";
 }

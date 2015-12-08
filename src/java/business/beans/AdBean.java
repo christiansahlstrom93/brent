@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package business.beans;
 
 import javax.ejb.Stateless;
@@ -27,8 +22,7 @@ public class AdBean implements AdBeanLocal {
                 jo = new JSONObject();
                 jo.put("headermessage", "Du letar efter " + product + " i " + location);
                 jo.put("title", product);
-                jo.put("description", "Mycket fin borr i sina bästa dagar. Uthyres till svenskar endast."
-                        + "Sänder kramar. MVH Jimmy." + i);
+                jo.put("description", "Fin cabbe till ett billigt pris. INDEX: " + i);
                 jo.put("price", i);
                 jo.put("location", location);
                 jo.put("url", "http://www.wikstrands.com/Userfiles/Bild/huddig-1260.jpg");
@@ -38,7 +32,26 @@ public class AdBean implements AdBeanLocal {
             return ja;
         } catch (JSONException ex) {
         }
-        
+
+        return null;
+    }
+
+    @Override
+    public JSONArray getUserCredentials(String usrName) {
+        JSONArray ja = new JSONArray();
+        try {
+            JSONObject jo;
+            jo = new JSONObject();
+            jo.put("firstname", "Morgan");
+            jo.put("lastname", "Persson");
+            jo.put("mail", "supermorgan@live.se");
+            jo.put("phone", "0733624439");
+            jo.put("location", "Malmö");
+            ja.put(jo);
+            return ja;
+        } catch (JSONException ex) {
+        }
+
         return null;
     }
 }

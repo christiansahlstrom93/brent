@@ -14,5 +14,9 @@ import org.json.JSONArray;
  */
 @Local
 public interface AdBeanLocal {
+
     JSONArray getAdListData(String location, String product);
+
+    JSONArray getUserCredentials(String usrName);
+
 }
