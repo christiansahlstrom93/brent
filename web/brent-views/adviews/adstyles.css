@@ -37,3 +37,15 @@ section#ad .thumbnail{
     width: auto;
     margin: 0 auto;
 }
+
+.rightPhone {
+    position: absolute;
+    right: 20px;
+    top: 10%;
+}
+
+.rightWeb {
+    position: absolute;
+    right: 20px;
+    top: 30%;
+}

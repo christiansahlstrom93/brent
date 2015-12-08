@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Vi lånar ut saker vi heter brent</title>
+        <title>Brent</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="../jquery.js"></script>
@@ -30,6 +30,37 @@
                     <button type="submit" class="btn btn-default" data-bind="click: searchAds">Sök</button>
                 </form>
             </div>
+
+            <!-- ko ifnot: isLoggedIn -->
+            <div data-bind="css: loginClass" class="dropdown">
+                <a id="label" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true">
+                    Logga in  
+                </a>
+
+                <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
+                    <li>
+                        <input id="username" type="text" class="form-control" placeholder="Användarnamn">
+                        <input style="margin-top: 4px;" id="password" type="text" class="form-control" placeholder="Lösenord">
+                        <br>
+                    </li>
+                    <button data-bind="click: login" type="login" class="btn btn-success pull-right" data-bind="click: searchAds">Logga in</button>
+                </ul>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: isLoggedIn -->
+            <div data-bind="css: loginClass" class="dropdown">
+                <a data-bind="text: username" id="dLabel" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true"></a>
+                <span class="caret"></span>
+                <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
+                    <li><a href="#">Mina annonser</a></li>
+                    <li><a data-bind="click: createAd" href="#">Lägg till annons</a></li>
+                    <li><a href="#">Kontoinställningar</a></li>
+                    <li><a href="#">Mina kontakter</a></li>
+                    <li><a data-bind="click:logout " href="#">Logga ut</a></li>
+                </ul>
+            </div>
+            <!-- /ko -->
         </nav>
 
         <div class="container" id="border-div">
