@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
- 
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -69,8 +69,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-         try {
+
+        try {
             CustomJsonParser jsonParser = new CustomJsonParser("username", request);
             PrintWriter out = response.getWriter();
             String username = jsonParser.getString();
@@ -81,16 +81,18 @@ public class LoginServlet extends HttpServlet {
             System.out.println("password " + password + "");
             System.out.println("************");
 
-          String result = adBean.loginCheck(username, password);
-             System.out.println(result + "detta är servlets result");
-            out.print("kug");
-            
+            String result = adBean.loginCheck(username, password);
+            out.print(result);
+
+
+            /*JSONObject mainObj = new JSONObject();
+            mainObj.put("usr", adBean.loginCheck(username, password));
+            out.print(mainObj);*/
         } catch (Exception e) {
-             System.out.println("servlet error"+ e);
+            System.out.println("servlet error" + e);
         }
     }
 
-    
     @Override
     public String getServletInfo() {
         return "Short description";

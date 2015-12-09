@@ -46,7 +46,7 @@ public class FileHandlerServlet extends HttpServlet {
         InputStream is = filePart.getInputStream();
 
         try {
-            FileOutputStream fos = new FileOutputStream("C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\mFile.jpg");
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\Ant\\Documents\\NetBeansProjects\\brent\\mfile.jpg");
             try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                 int count;
                 byte[] buffer = new byte[4096];
@@ -60,12 +60,12 @@ public class FileHandlerServlet extends HttpServlet {
             System.out.println(ex);
         }
         //TODO ändra path
-        File f = new File("C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\mFile.jpg");
+        File f = new File("C:\\Users\\Ant\\Documents\\NetBeansProjects\\brent\\mfile.jpg");
         Long lengthInBytes = f.length();
         Long lengthInKb = lengthInBytes / 1024;
         if (lengthInKb > 100) {
-            BufferedImage i = ImageIO.read(new File("C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\mFile.jpg"));
-            PictureCompressor.compressAndShow(i, 0.01f);
+            BufferedImage image = ImageIO.read(new File("C:\\Users\\Ant\\Documents\\NetBeansProjects\\brent\\mfile.jpg"));
+            PictureCompressor.resize(image);
         } else {
             System.out.println("den var mindre");
         }

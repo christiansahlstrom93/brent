@@ -35,15 +35,17 @@ public class LoginCheck {
             try {
                 con = DriverManager.getConnection(url, user, password);
                 st = con.createStatement();
-                rs = st.executeQuery("SELECT password FROM Users WHERE email ='" + username + "';");
+                rs = st.executeQuery("SELECT password, firstname FROM Users WHERE email ='" + username + "';");
                 if (rs.next()) {
                     System.out.println(rs.getString(1));
 
-                    if (rs.getString(1).equals(usrPassword)) {
-                        result = "success";
-                    } else {
-                        result = "failed";
+                    if (rs.getString("password").equals(usrPassword)) {
+                        result = rs.getString("firstname");
+                    }else{
+                    result = "failed";
                     }
+                } else {
+                    result = "failed";
                 }
             } catch (SQLException ex) {
                 System.out.println(ex);
