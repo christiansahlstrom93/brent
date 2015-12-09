@@ -53,11 +53,25 @@ function adrequest() {
                         var pass = document.getElementById("password").value;
 
                         //skicka ajax till mauritz
+                        $.ajax({
+                            url: "../../LoginServlet",
+                            type: 'POST',
+                            dataType: 'JSON',
+                            data: {username: usr, password: pass},
+                            success: function (response) {
+                                console.log("dsaldusaoiuds" + response)
+                                if (response == "success") {
+                                    setCookie("username", usr, 365);
+                                    isLoggedIn(true);
+                                    username(usr);
+                                }else if(response == "failed"){
+                                    
+                                    console.log("hej", "hej")
+                                }
+                            }
+                        });
 
-                        //godkänd response
-                        setCookie("username", usr, 365);
-                        isLoggedIn(true);
-                        username(usr);
+                    
                     };
 
                     self.logout = function () {
@@ -67,7 +81,7 @@ function adrequest() {
                     };
 
                     self.createAd = function () {
-                        localStorage.setItem("username",getCookie("username"));
+                        localStorage.setItem("username", getCookie("username"));
                         window.open("../profile-views/ad/newad.html", "_self");
                     };
                 }

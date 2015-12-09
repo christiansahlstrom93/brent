@@ -1,5 +1,7 @@
 package business.beans;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,5 +55,19 @@ public class AdBean implements AdBeanLocal {
         }
 
         return null;
+    }
+
+    @Override
+    public String loginCheck(String username, String password) {
+        String result = "";
+
+        try {
+            LoginCheck l = new LoginCheck();
+            result = l.Login(username, password);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+
     }
 }
