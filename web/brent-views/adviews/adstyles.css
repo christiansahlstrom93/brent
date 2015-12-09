@@ -49,3 +49,35 @@ section#ad .thumbnail{
     right: 20px;
     top: 30%;
 }
+
+.centertext {
+    text-align: center;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+input[readonly] {
+    background-color: white !important;
+    cursor: text !important;
+}
+
+.addiv-image {
+    display: inline;
+}
+
+.newadframe {
+    width: 70%; margin-top: 100px;
+}
