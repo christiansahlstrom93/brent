@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Skapa annons</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="../../jquery.js"></script>
+        <script src="../../bootstrap.min.js"></script>
+        <script src="../../knockout.js"></script>
+        <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+        <script src="newad-view-model.js"></script>
+        <link rel="stylesheet" href="../../adviews/adstyles.css">
+    </head>
+    <body id="body">
+        <script>
+            initViewModel();
+        </script>
+
+
+        <nav id="nav" class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand"><img src="http://blogs.fasos.maastrichtuniversity.nl/logoimago/mpiersotte/wp-content/uploads/sites/139/2015/04/mixed-logo.jpg" alt="Dispute Bills"></a>
+                </div>              
+            </div>
+        </nav>
+
+        <div class="container" id="border-div">
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span10">
+                        <br><br><br>
+                        <p>Namn</p>
+                        <input data-bind="value: firstname" id="firstname" type="text"><br><br>
+                        <p>Efternamn</p>
+                        <input data-bind="value: lastname" id="lastname" type="text"><br><br>
+                        <p>E-post</p>
+                        <input data-bind="value: mail" id="mail" type="text"><br><br>
+                        <p>Telefon</p>
+                        <input data-bind="value: phone" id="phone" type="text"><br><br>
+                        <p>Plats</p>
+                        <input data-bind="value: place" id="location" type="text"><br><br>
+                        <br><br><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
