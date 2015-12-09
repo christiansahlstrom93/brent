@@ -15,6 +15,7 @@ function adrequest() {
     self.loginClass = ko.observable(className());
     self.username = ko.observable(getCookie("username"));
 
+
     $.ajax({
         url: "../../AdServlet",
         type: 'POST',
@@ -51,27 +52,24 @@ function adrequest() {
                     self.login = function () {
                         var usr = document.getElementById("username").value;
                         var pass = document.getElementById("password").value;
-
-                        //skicka ajax till mauritz
+                        if(usr != "" && pass != ""){
                         $.ajax({
                             url: "../../LoginServlet",
                             type: 'POST',
-                            dataType: 'JSON',
                             data: {username: usr, password: pass},
                             success: function (response) {
                                 console.log("dsaldusaoiuds" + response)
-                                if (response == "success") {
-                                    setCookie("username", usr, 365);
+                                if (response != "failed") {
+                                    setCookie("username", response, 365);
                                     isLoggedIn(true);
-                                    username(usr);
-                                }else if(response == "failed"){
-                                    
-                                    console.log("hej", "hej")
+                                    username(response);
+                                } else {
+
                                 }
                             }
                         });
+                    }
 
-                    
                     };
 
                     self.logout = function () {
