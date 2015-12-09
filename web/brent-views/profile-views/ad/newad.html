@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <title>Skapa annons</title>
@@ -13,6 +9,7 @@ and open the template in the editor.
         <script src="../../bootstrap.min.js"></script>
         <script src="../../knockout.js"></script>
         <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+        <script src="../../jquery.form.js"></script>
         <script src="newad-view-model.js"></script>
         <link rel="stylesheet" href="../../adviews/adstyles.css">
     </head>
@@ -20,8 +17,6 @@ and open the template in the editor.
         <script>
             initViewModel();
         </script>
-
-
         <nav id="nav" class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -29,25 +24,57 @@ and open the template in the editor.
                 </div>              
             </div>
         </nav>
-
-        <div class="container" id="border-div">
-            <div class="container-fluid">
+        <div class="container newadframe" id="border-div">
+            <div  class="container-fluid">
                 <div class="row-fluid">
                     <div class="span10">
+                        <h3 class="centertext" data-bind="text: admessage"></h3>
                         <br><br><br>
                         <p>Namn</p>
                         <input data-bind="value: firstname" id="firstname" type="text"><br><br>
                         <p>Efternamn</p>
-                        <input data-bind="value: lastname" id="lastname" type="text"><br><br>
+                        <input style=" float: left;" data-bind="value: lastname" id="lastname" type="text"><br><br>
                         <p>E-post</p>
                         <input data-bind="value: mail" id="mail" type="text"><br><br>
                         <p>Telefon</p>
                         <input data-bind="value: phone" id="phone" type="text"><br><br>
                         <p>Plats</p>
-                        <input data-bind="value: place" id="location" type="text"><br><br>
-                        <br><br><br><br>
+                        <input data-bind="value: place" id="place" type="text">              
+                        <hr>
+                        <label onclick="handleCheckBox('day')" class="checkbox-inline"><input id="daybox" type="checkbox" checked>Per dag</label>
+                        <label onclick="handleCheckBox('hour')" class="checkbox-inline"><input id="hourbox" type="checkbox" value="">Per timme</label>
+                        <br><br>
+                        <p>Pris (SEK)</p>
+                        <input id="price" type="number"><br><br>
+                        <p>Rubrik</p>
+                        <input id="adtitle" type="text"><br><br> 
+                        <div class="form-group center-block">
+                            <label for="comment">Annonstext</label>
+                            <textarea class="form-control" rows="15" id="adtext"></textarea>
+                        </div>
+                        <br><br>
+                        <form id="upload-form" class="upload-box" action="../../../upload" method="post" enctype="multipart/form-data">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-primary btn-file">
+                                        Välj bild&hellip; <input accept="image/*" type="file" id="file" name="file">
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                            </div>
+                            <br><br>
+                            <img style="visibility: hidden; width: 250px; height: 250px;" class="thumbnail" id="blah" src="#" alt="" />
+                            <input style="visibility: hidden" class="btn btn-success pull-right" type="submit" id="upload-button" value="Spara din annons"/>
+                            <br><br>
+                        </form>
                     </div>
                 </div>
+            </div>
+            <div id="success" style="visibility: hidden;" class="alert alert-success" role="alert">
+                <a class="alert-link">Din annons är nu inlagd för granskning.</a>
+            </div>
+            <div id="fail" style="visibility: hidden;" class="alert alert-danger" role="alert">
+                <a class="alert-link">Något gick fel. Kolla så du fyllt i alla rutor i testa igen.</a>
             </div>
         </div>
     </body>
