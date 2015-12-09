@@ -18,5 +18,6 @@ public interface AdBeanLocal {
     JSONArray getAdListData(String location, String product);
 
     JSONArray getUserCredentials(String usrName);
-
+    
+    String loginCheck(String username, String password);
 }
