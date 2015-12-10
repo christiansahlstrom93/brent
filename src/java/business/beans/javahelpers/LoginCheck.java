@@ -5,59 +5,33 @@
  */
 package business.beans.javahelpers;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Ant
  */
-public class LoginCheck {
+public class LoginCheck extends Server {
 
-    String result = "";
+    String result = "failed";
 
     public String Login(String username, String usrPassword) throws ClassNotFoundException {
+
         try {
-            Connection con = null;
-            Statement st = null;
-            ResultSet rs = null;
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            String args = "SELECT password, firstname FROM Users WHERE email ='" + username + "';";
+            setStatement(getConn().createStatement());
+            setResultSet(getStatement().executeQuery(args));
 
-            String url = "jdbc:mysql://109.74.1.55:3306/Brent";
-            String user = "root";
-            String password = "r6vzpvjn";
-
-            try {
-                con = DriverManager.getConnection(url, user, password);
-                st = con.createStatement();
-                rs = st.executeQuery("SELECT password, firstname FROM Users WHERE email ='" + username + "';");
-                if (rs.next()) {
-                    System.out.println(rs.getString(1));
-
-                    if (rs.getString("password").equals(usrPassword)) {
-                        result = rs.getString("firstname");
-                    }else{
-                    result = "failed";
-                    }
+            if (getResultSet().next()) {
+                if (getResultSet().getString("password").equals(usrPassword)) {
+                    result = getResultSet().getString("firstname");
                 } else {
                     result = "failed";
                 }
-            } catch (SQLException ex) {
-                System.out.println(ex);
             }
-            System.out.println(result + "     =resultatet");
-        } catch (InstantiationException ex) {
-            Logger.getLogger(LoginCheck.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(LoginCheck.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (Exception e) {
+
         }
         return result;
-
     }
 
 }

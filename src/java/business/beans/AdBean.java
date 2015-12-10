@@ -64,6 +64,7 @@ public class AdBean implements AdBeanLocal {
 
         try {
             LoginCheck l = new LoginCheck();
+            l.connectToServer();
             result = l.Login(username, password);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AdBean.class.getName()).log(Level.SEVERE, null, ex);
