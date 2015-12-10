@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Skapa användare</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="../../jquery.js"></script>
+        <script src="../../bootstrap.js"></script>
+        <script src="../../knockout.js"></script>
+        <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+        <script src="../../jquery.form.js"></script>
+        <script src="createUser-view.js"></script>
+        <link rel="stylesheet" href="../../adviews/adstyles.css">
+    </head>
+    <body>
+        <nav id="nav" class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand"><img src="http://blogs.fasos.maastrichtuniversity.nl/logoimago/mpiersotte/wp-content/uploads/sites/139/2015/04/mixed-logo.jpg" alt="Dispute Bills"></a>
+
+                    </nav>
+                    <h3 ALIGN="CENTER" >
+                        Skapa en ny användare 
+                    </h3>
+                    <div class="container newadframe" id="border-div">
+                        <div  class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="span10">
+
+                                    <p>Namn</p>
+                                    <input id="firstname" type="text"><br><br>
+                                    <p>Efternamn</p>
+                                    <input style=" float: left;" id="lastname" type="text"><br><br>
+                                    <p>Personnummer</p>
+                                    <input style=" float: left;" placeholder="ÅÅÅÅMMDDXXXX" id="personnumber" type="text"><br><br>
+                                    <p>E-post</p>
+                                    <input placeholder="stuffe@spray.se"  id="mail1" type="text" style ="width: 25%" ><br><br>
+                                    <p>Återupprepa E-post</p>
+                                    <input placeholder="stuffe@spray.se" id="mail2"  type="text" style ="width: 25%" ><br><br>
+                                    <p>Telefon</p>
+                                    <input  id="phone" type="text"><br><br>
+                                    <p>Stad</p>
+                                    <input  id="city" type="text"> <br><br>
+                                    <p>Address</p>
+                                    <input  id="address" type="text">  <br><br>    
+                                    <p>Postnummer</p>
+                                    <input id="postalcode" type="text">   <br><br>   
+
+
+                                    <p>Lösenord</p>
+                                    <input id="pass1" type="password">   <br><br>  
+
+                                    <p>Återupprepa lösenord</p>
+                                    <input  id="pass2" type="password"> 
+                                    <div id="divPassMatch" style="visibility: hidden; width: 5%" class="alert alert-danger" role="alert">
+                                        <a class="alert-link"> OK </a>
+                                    </div>
+
+
+                                </div>
+
+                                <div>
+                                    <button class="btn bg-primary" onclick="createUser()">Skapa användare</button> 
+
+                                    <div id="accountSuccess" style="visibility: hidden; " class="alert alert-danger" role="alert" >
+                                        <a id="createSuccess" class="alert-link" >  </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br><br>
+
+                        </div>
+                    </div>
+
+                    <br>
+
+                    </body>
+                    </html>
