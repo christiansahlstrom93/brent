@@ -17,7 +17,7 @@ function invoker() {
         }
     });
     
-   //window.open("../Brent/brent-views/adviews/adview-template.html#","_self");
+   window.open("../Brent/brent-views/adviews/adview-template.html#","_self");
 }
 
 

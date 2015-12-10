@@ -1,5 +1,5 @@
 function initViewModel() {
-    var name = localStorage.getItem("username");
+    var name = localStorage.getItem("email");
     var self = this;
     self.firstname = ko.observable();
     self.lastname = ko.observable();
@@ -7,6 +7,14 @@ function initViewModel() {
     self.phone = ko.observable();
     self.place = ko.observable();
     self.admessage = ko.observable();
+
+    if (mobilecheck()) {
+        self.imageStyle = ko.observable("thumbnail newadImagemobile");
+        self.containerStyle = ko.observable("container newadframemobile");
+    } else {
+        self.imageStyle = ko.observable("thumbnail newadImageweb");
+        self.containerStyle = ko.observable("container newadframeweb");
+    }
 
     $.ajax({
         url: "../../../NewAdServlet",
@@ -16,12 +24,13 @@ function initViewModel() {
         success: function (response) {
             $(function () {
                 function NewAdViewModel() {
+                    console.log(response);
                     var data = response.credentials[0];
                     firstname(data.firstname);
                     lastname(data.lastname);
                     mail(data.mail);
                     phone(data.phone);
-                    place(data.location);
+                    place(data.city);
                     admessage("Skapa en annons");
                 }
                 ko.applyBindings(NewAdViewModel());
@@ -33,7 +42,7 @@ function initViewModel() {
 $(function () {
     $('#upload-form').ajaxForm({
         success: function (msg) {
-            saveAd();
+            saveAd(msg);
         },
         error: function (msg) {
             alert(msg.toString());
@@ -41,8 +50,8 @@ $(function () {
     });
 });
 
-function saveAd() {
-
+function saveAd(imageurl) {
+    console.log(imageurl);
     var firstname = $("#firstname").val();
     var lastname = $("#lastname").val();
     var mail = $("#mail").val();
@@ -53,16 +62,22 @@ function saveAd() {
     var pricetype = getCheckBoxType();
     var adtext = $("#adtext").val();
 
-    if (adtext && firstname && lastname && mail && phone && place && price && title && pricetype && adtext) {
+    if (adtext && firstname && lastname && mail && phone && place && price && title && pricetype && adtext && imageurl) {
         $.ajax({
             url: "../../../SaveAdServlet",
             type: 'POST',
             dataType: 'JSON',
             data: {firstname: firstname, lastname: lastname, mail: mail,
-                phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext},
+                phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext, imageurl: imageurl},
             success: function (response) {
-                document.getElementById('success').style.visibility = 'visible';
-                document.getElementById('fail').style.visibility = 'hidden';
+                console.log(response);
+                if (response.state) {
+                    document.getElementById('success').style.visibility = 'visible';
+                    document.getElementById('fail').style.visibility = 'hidden';
+                } else {
+                    document.getElementById('success').style.visibility = 'hidden';
+                    document.getElementById('fail').style.visibility = 'visible';
+                }
             },
             error: function (response) {
                 console.log(response);

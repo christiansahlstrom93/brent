@@ -10,6 +10,7 @@
         <script src="../../knockout.js"></script>
         <link rel="stylesheet" href="../../../css/bootstrap.min.css">
         <script src="../../jquery.form.js"></script>
+        <script src="../../adviews/adview-model.js"></script>
         <script src="newad-view-model.js"></script>
         <link rel="stylesheet" href="../../adviews/adstyles.css">
     </head>
@@ -24,7 +25,7 @@
                 </div>              
             </div>
         </nav>
-        <div class="container newadframe" id="border-div">
+        <div data-bind="css: containerStyle" id="border-div">
             <div  class="container-fluid">
                 <div class="row-fluid">
                     <div class="span10">
@@ -63,7 +64,7 @@
                                 <input type="text" class="form-control" readonly>
                             </div>
                             <br><br>
-                            <img style="visibility: hidden; width: 250px; height: 250px;" class="thumbnail" id="blah" src="#" alt="" />
+                            <img data-bind="css: imageStyle" id="blah" src="#"  />
                             <input style="visibility: hidden" class="btn btn-success pull-right" type="submit" id="upload-button" value="Spara din annons"/>
                             <br><br>
                         </form>
@@ -74,7 +75,7 @@
                 <a class="alert-link">Din annons är nu inlagd för granskning.</a>
             </div>
             <div id="fail" style="visibility: hidden;" class="alert alert-danger" role="alert">
-                <a class="alert-link">Något gick fel. Kolla så du fyllt i alla rutor i testa igen.</a>
+                <a id="alert" class="alert-link">Något gick fel. Kolla så du fyllt i alla rutor i testa igen.</a>
             </div>
         </div>
     </body>

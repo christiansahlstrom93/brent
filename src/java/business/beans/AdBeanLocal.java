@@ -16,8 +16,7 @@ import org.json.JSONArray;
 public interface AdBeanLocal {
 
     JSONArray getAdListData(String location, String product);
-
     JSONArray getUserCredentials(String usrName);
-    
     String loginCheck(String username, String password);
+    boolean addAd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber, String city);
 }
