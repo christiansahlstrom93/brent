@@ -11,15 +11,20 @@ section#ad .thumbnail{
 }
 
 #description {
-    text-align: center;
+    text-align: left;
 }
 
 #title {
-    text-align: center;
+    text-align: left;
 }
 
 #location-link {
     color: #0000CD;
+}
+
+#name-link {
+    color: lightgrey;
+    text-align: right;
 }
 
 #location-link-ad {
@@ -78,6 +83,42 @@ input[readonly] {
     display: inline;
 }
 
-.newadframe {
+.newadframeweb {
     width: 70%; margin-top: 100px;
+}
+.newadframemobile {
+    margin-top: 10px;
+}
+
+.newadImageweb {
+    visibility: hidden; width: 250px; height: 250px;
+}
+.newadImagemobile {
+    visibility: hidden; width: 100px; height: 100px;
+}
+
+.adImageweb {
+    width: 150px; height: 150px;
+}
+
+.adImagewebdisplay {
+    width: 450px; height: 450px;
+    margin: auto;
+}
+.adImagemobile {
+    margin: auto;  
+    width: 60%; height: 100px;
+}
+
+.rowStyleweb {
+    height: 150px;
+}
+
+.rowStylemobile {
+    height: 120px;
+}
+
+.mobileTitle {
+    font-size: 130%;
+    color: #000;
 }

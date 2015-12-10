@@ -59,7 +59,5 @@ public abstract class Server {
 
     public void setStatement(Statement statement) {
         this.statement = statement;
-    }
-
-    
+    }    
 }

@@ -15,6 +15,20 @@ function adrequest() {
     self.loginClass = ko.observable(className());
     self.username = ko.observable(getCookie("username"));
 
+    if (mobilecheck()) {
+        self.imageClass = ko.observable("thumbnail adImagemobile");
+        self.containerStyle = ko.observable("container newadframemobile");
+        self.rowHeight = ko.observable("row rowStyleweb");
+        self.displayimageclass = ko.observable("thumbnail adImagewebdisplay");
+        self.mobileAdText = ko.observable("mobileTitle");
+    } else {
+        self.rowHeight = ko.observable("row rowStylemobile");
+        self.imageClass = ko.observable("thumbnail adImageweb");
+        self.containerStyle = ko.observable("container newadframeweb");
+        self.displayimageclass = ko.observable("thumbnail adImagewebdisplay");
+        self.mobileAdText = ko.observable("");
+    }
+
 
     $.ajax({
         url: "../../AdServlet",
@@ -24,10 +38,10 @@ function adrequest() {
         success: function (response) {
             $(function () {
                 function AdViewModel() {
-                    console.log(response);
-                    self.ads(response.ads);
-                    headerMessage(response.ads[0].headermessage);
-
+                    if (response.ads[0]) {
+                        self.ads(response.ads);
+                        headerMessage(response.ads[0].headermessage);
+                    }
                     self.gotoAd = function (data) {
                         try {
                             self.showList(false);
@@ -40,7 +54,6 @@ function adrequest() {
                     self.searchAds = function () {
                         var location = document.getElementById("location").value;
                         var product = document.getElementById("product").value;
-
                         makeRequest(self, location, product);
                     };
 
@@ -52,23 +65,23 @@ function adrequest() {
                     self.login = function () {
                         var usr = document.getElementById("username").value;
                         var pass = document.getElementById("password").value;
-                        if(usr != "" && pass != ""){
-                        $.ajax({
-                            url: "../../LoginServlet",
-                            type: 'POST',
-                            data: {username: usr, password: pass},
-                            success: function (response) {
-                                console.log("dsaldusaoiuds" + response)
-                                if (response != "failed") {
-                                    setCookie("username", response, 365);
-                                    isLoggedIn(true);
-                                    username(response);
-                                } else {
+                        if (usr != "" && pass != "") {
+                            $.ajax({
+                                url: "../../LoginServlet",
+                                type: 'POST',
+                                data: {username: usr, password: pass},
+                                success: function (response) {
+                                    if (response != "failed") {
+                                        setCookie("username", response, 365);
+                                        setCookie("email", usr, 365);
+                                        isLoggedIn(true);
+                                        username(response);
+                                    } else {
 
+                                    }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        }
 
                     };
 
@@ -79,7 +92,7 @@ function adrequest() {
                     };
 
                     self.createAd = function () {
-                        localStorage.setItem("username", getCookie("username"));
+                        localStorage.setItem("email", getCookie("email"));
                         window.open("../profile-views/ad/newad.html", "_self");
                     };
                 }

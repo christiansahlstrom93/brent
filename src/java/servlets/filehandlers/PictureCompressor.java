@@ -12,7 +12,9 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import javax.imageio.ImageIO;
+import static servlets.FileHandlerServlet.CHRILLEPATH;
 
 /**
  *
@@ -20,8 +22,11 @@ import javax.imageio.ImageIO;
  */
 public class PictureCompressor {
 
-    public static void resize(BufferedImage image) throws IOException {
-        System.out.println("kommer in");
+    public static String resize(BufferedImage image) throws IOException {
+        Random random = new Random();
+       
+        String path = "mfile" + random.nextInt(40302030)+".jpeg";
+        
         BufferedImage temp = null;
 
         if (image.getWidth() > image.getHeight()) {
@@ -29,10 +34,11 @@ public class PictureCompressor {
         } else {
             temp = resizeImage(image, 311, 400);
         }
-        File file = new File("C:\\Users\\Ant\\Documents\\NetBeansProjects\\brent\\mFile.jpeg");
+        File file = new File(CHRILLEPATH+path);
 
         ImageIO.write(temp, "jpg", file);
-
+        
+        return "http://194.47.40.116:8080/Brent/"+ path;
     }
 
     public static BufferedImage resizeImage(final Image image, int width, int height) {

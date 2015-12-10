@@ -1,12 +1,12 @@
 package business.beans;
 
+import business.beans.adhandlers.AdHandler;
 import business.beans.javahelpers.LoginCheck;
+import business.beans.usercredentials.UserInfo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -17,23 +17,11 @@ public class AdBean implements AdBeanLocal {
 
     @Override
     public JSONArray getAdListData(String location, String product) {
-        JSONArray ja = new JSONArray();
         try {
-            JSONObject jo;
-
-            for (int i = 0; i < 10; i++) {
-                jo = new JSONObject();
-                jo.put("headermessage", "Du letar efter " + product + " i " + location);
-                jo.put("title", product);
-                jo.put("description", "Fin cabbe till ett billigt pris. INDEX: " + i);
-                jo.put("price", i);
-                jo.put("location", location);
-                jo.put("url", "http://www.wikstrands.com/Userfiles/Bild/huddig-1260.jpg");
-                jo.put("imageURL", "http://www.maserati.com/mediaObject/examples/models/granCabrio/100730M_MY2013_2/resolutions/res-l964x10000/100730M_MY2013_2.jpg");
-                ja.put(jo);
-            }
-            return ja;
-        } catch (JSONException ex) {
+            AdHandler adHandler = new AdHandler();
+            adHandler.connectToServer();
+            return adHandler.getAds(location, product);
+        } catch (Exception ex) {
         }
 
         return null;
@@ -41,18 +29,11 @@ public class AdBean implements AdBeanLocal {
 
     @Override
     public JSONArray getUserCredentials(String usrName) {
-        JSONArray ja = new JSONArray();
         try {
-            JSONObject jo;
-            jo = new JSONObject();
-            jo.put("firstname", "Morgan");
-            jo.put("lastname", "Persson");
-            jo.put("mail", "supermorgan@live.se");
-            jo.put("phone", "0733624439");
-            jo.put("location", "Malmö");
-            ja.put(jo);
-            return ja;
-        } catch (JSONException ex) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.connectToServer();
+            return userInfo.getUserCredentials(usrName);
+        } catch (Exception ex) {
         }
 
         return null;
@@ -71,5 +52,17 @@ public class AdBean implements AdBeanLocal {
         }
         return result;
 
+    }
+
+    @Override
+    public boolean addAd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber,String city) {
+        try {
+            AdHandler adHandler = new AdHandler();
+            adHandler.connectToServer();
+            return adHandler.adAdd(email, imageurl, pricetype, ownermail, price, title, adText, firstname, lastname, phonenumber,city);
+        } catch (Exception ex) {
+            System.out.println("Fel i bönan " + ex);
+        }
+        return false;
     }
 }

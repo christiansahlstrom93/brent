@@ -5,10 +5,10 @@
  */
 package servlets;
 
+import business.beans.AdBeanLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +24,8 @@ import org.json.JSONObject;
  */
 @WebServlet(name = "SaveAdServlet", urlPatterns = {"/SaveAdServlet"})
 public class SaveAdServlet extends HttpServlet {
+    @EJB
+    private AdBeanLocal adBean;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,13 +42,46 @@ public class SaveAdServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            System.out.println("POST");
+            String firstname;
+            String lastname;
+            String email;
+            String imageurl;
+            String pricetype;
+            double price;
+            String title;
+            String adText;
+            String phone;
+            String city;
+            
             processRequest(request, response);
-            System.out.println("HAPP");
-            CustomJsonParser parser = new CustomJsonParser("firstname", request);
-
+            CustomJsonParser parser = new CustomJsonParser("mail", request);
+            email = parser.getString();
+            parser.setKey("firstname");
+            firstname = parser.getString();
+            parser.setKey("lastname");
+            lastname = parser.getString();
+            parser.setKey("adtext");
+            adText = parser.getString();
+            parser.setKey("pricetype");
+            pricetype = parser.getString();
+            parser.setKey("price");
+            price = Double.parseDouble(parser.getString());
+            parser.setKey("title");
+            title = parser.getString();
+            parser.setKey("phone");
+            phone = parser.getString();
+            parser.setKey("imageurl");
+            imageurl = parser.getString();
+            parser.setKey("place");
+            city = parser.getString();
+            
+            imageurl = imageurl.replace("\\", "\\\\\\");
+            boolean state = adBean.addAd(email, imageurl, pricetype, email, price, title, adText,firstname,lastname,phone,city);
+                        
             PrintWriter out = response.getWriter();
             JSONObject json = new JSONObject();
-            json.put("name", parser.getString());
+            json.put("state",state);
             out.print(json);
 
         } catch (JSONException ex) {

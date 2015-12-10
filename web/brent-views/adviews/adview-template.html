@@ -25,6 +25,9 @@
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input id="product" type="text" class="form-control" placeholder="Exempel: borrmaskin">
+                        <!-- ko if: isMobile -->
+                        <br>
+                        <!-- /ko -->
                         <input id="location" type="text" class="form-control" placeholder="Exempel: Malmö">
                     </div>
                     <button type="submit" class="btn btn-default" data-bind="click: searchAds">Sök</button>
@@ -63,26 +66,27 @@
             <!-- /ko -->
         </nav>
 
-        <div class="container" id="border-div">
+        <div data-bind="css: containerStyle" id="border-div">
             <div class="container-fluid">
-                <div class="row-fluid">
+                <div  class="row-fluid">
                     <div class="span10">
                         <div data-bind="visible: showList">
                             <br>
                             <section data-bind="foreach: {data: ads}">
-                                <div class = "row">
+                                <div data-bind="css: rowHeight">
                                     <div class = "col-sm-6 col-md-3">
-                                        <a href = "#" class = "thumbnail">
-                                            <img data-bind="attr:{src: imageURL}, click: gotoAd" alt = "">
+                                        <a href = "#" >
+                                            <img data-bind="attr:{src: imageURL}, click: gotoAd, css: imageClass" alt = "">
                                         </a>
                                     </div>
                                     <div class = "caption">
-                                        <p id="location-link" data-bind="text: location"></p>
+                                        <p id="name-link" data-bind="text: firstname"></p>
+                                        <p id="location-link" data-bind="text: location, visible: isComputer"></p>
                                         <h4 id="title" data-bind="text: title"></h4>
-                                        <p id="description" data-bind="text: description"></p>
+                                        <p id="description" data-bind="text: price"></p>
                                     </div>
                                 </div>
-                                <hr>
+                                <br><hr>
                             </section>
                         </div>
 
@@ -95,15 +99,17 @@
                                         <img data-bind="attr:{src: imageURL}, click: gotoAd" alt = "">
                                     </a>
                                 </div>
-                                <div data-bind="visible: isComputer" class="container">
-                                    <div class="row">
-                                        <img class="thumbnail" data-bind="attr:{src: imageURL}">
-                                    </div>
+                                <div data-bind="visible:isComputer" class="row">
+                                    <img data-bind="attr:{src: imageURL}, css: displayimageclass">
                                 </div>
                                 <div class = "caption">
                                     <p id="location-link-ad" data-bind="text: location"></p>
+                                    <h2 style="text-align:left;float:left;" data-bind="text: title, css: mobileAdText"></h2>
+                                    <h3 style="text-align:right;float:right;" data-bind="text: displayprice, css: mobileAdText"></h3>
+                                    <br style="clear:both;"/>
+                                    <a href="#" id="location-link-ad" data-bind="text: salesmessage"></a>
+                                    <hr>
                                     <div class="jumbotron">
-                                        <h2 id="title" data-bind="text: title"></h2>
                                         <h5 id="description" data-bind="text: description"></h5>
                                     </div>
                                 </div>
