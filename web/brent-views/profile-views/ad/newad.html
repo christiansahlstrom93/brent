@@ -20,9 +20,7 @@
         </script>
         <nav id="nav" class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand"><img src="http://blogs.fasos.maastrichtuniversity.nl/logoimago/mpiersotte/wp-content/uploads/sites/139/2015/04/mixed-logo.jpg" alt="Dispute Bills"></a>
-                </div>              
+                <img data-bind="css: navBarImage" src="../../../img/logo.png" alt="logo">    
             </div>
         </nav>
         <div data-bind="css: containerStyle" id="border-div">
@@ -36,7 +34,7 @@
                         <p>Efternamn</p>
                         <input style=" float: left;" data-bind="value: lastname" id="lastname" type="text"><br><br>
                         <p>E-post</p>
-                        <input data-bind="value: mail" id="mail" type="text"><br><br>
+                        <input data-bind="value: mail" id="mail" type="email"><br><br>
                         <p>Telefon</p>
                         <input data-bind="value: phone" id="phone" type="text"><br><br>
                         <p>Plats</p>
@@ -46,11 +44,11 @@
                         <label onclick="handleCheckBox('hour')" class="checkbox-inline"><input id="hourbox" type="checkbox" value="">Per timme</label>
                         <br><br>
                         <p>Pris (SEK)</p>
-                        <input id="price" type="number"><br><br>
+                        <input id="priceField" type="number"><br><br>
                         <p>Rubrik</p>
                         <input id="adtitle" type="text"><br><br> 
                         <div class="form-group center-block">
-                            <label for="comment">Annonstext</label>
+                            <label>Annonstext</label>
                             <textarea class="form-control" rows="15" id="adtext"></textarea>
                         </div>
                         <br><br>
@@ -64,10 +62,10 @@
                                 <input type="text" class="form-control" readonly>
                             </div>
                             <br><br>
-                            <img data-bind="css: imageStyle" id="blah" src="#"  />
+                            <img data-bind="css: imageStyle" id="blah" src="#"/>
                             <input style="visibility: hidden" class="btn btn-success pull-right" type="submit" id="upload-button" value="Spara din annons"/>
-                            <br><br>
                         </form>
+                        <input id="arrow" style="visibility: hidden;" data-bind="click: turnImage" type="image" src="../../../img/pil.png" alt="Submit" width="48" height="48">
                     </div>
                 </div>
             </div>

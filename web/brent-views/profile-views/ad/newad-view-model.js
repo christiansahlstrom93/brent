@@ -9,10 +9,12 @@ function initViewModel() {
     self.admessage = ko.observable();
 
     if (mobilecheck()) {
-        self.imageStyle = ko.observable("thumbnail newadImagemobile");
+        self.navBarImage = ko.observable("navbar-brand-image");
+        self.imageStyle = ko.observable("thumbnail newadImagemobile north");
         self.containerStyle = ko.observable("container newadframemobile");
     } else {
-        self.imageStyle = ko.observable("thumbnail newadImageweb");
+        self.navBarImage = ko.observable("navbar-brand-image pull-left");
+        self.imageStyle = ko.observable("thumbnail newadImageweb north");
         self.containerStyle = ko.observable("container newadframeweb");
     }
 
@@ -32,11 +34,34 @@ function initViewModel() {
                     phone(data.phone);
                     place(data.city);
                     admessage("Skapa en annons");
+                    self.turnImage = function () {
+                        var className;
+                        if (mobilecheck()) {
+                            className = "newadImagemobile";
+                        } else {
+                            className = "newadImageweb";
+                        }
+                        var element = document.getElementById('blah');
+
+                        if (hasClass(element, 'north')) {
+                            self.imageStyle("thumbnail " + className + " west");
+                        } else if (hasClass(element, 'east')) {
+                            self.imageStyle("thumbnail " + className + " north");
+                        } else if (hasClass(element, 'west')) {
+                            self.imageStyle("thumbnail " + className + " south");
+                        } else {
+                            self.imageStyle("thumbnail " + className + " east");
+                        }
+                    };
                 }
                 ko.applyBindings(NewAdViewModel());
             });
         }
     });
+}
+
+function hasClass(element, cls) {
+    return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
 
 $(function () {
@@ -45,22 +70,22 @@ $(function () {
             saveAd(msg);
         },
         error: function (msg) {
-            alert(msg.toString());
         }
     });
 });
 
 function saveAd(imageurl) {
-    console.log(imageurl);
+
     var firstname = $("#firstname").val();
     var lastname = $("#lastname").val();
     var mail = $("#mail").val();
     var phone = $("#phone").val();
     var place = $("#place").val();
-    var price = $("#price").val();
+    var price = $("#priceField").val();
     var title = $("#adtitle").val();
     var pricetype = getCheckBoxType();
     var adtext = $("#adtext").val();
+    var imageorientation = getOrientation();
 
     if (adtext && firstname && lastname && mail && phone && place && price && title && pricetype && adtext && imageurl) {
         $.ajax({
@@ -68,12 +93,16 @@ function saveAd(imageurl) {
             type: 'POST',
             dataType: 'JSON',
             data: {firstname: firstname, lastname: lastname, mail: mail,
-                phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext, imageurl: imageurl},
+                phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext, imageurl: imageurl
+                , imgorientation: imageorientation},
             success: function (response) {
                 console.log(response);
                 if (response.state) {
                     document.getElementById('success').style.visibility = 'visible';
                     document.getElementById('fail').style.visibility = 'hidden';
+                    setTimeout(function () {
+                        history.back();
+                    }, 3000);
                 } else {
                     document.getElementById('success').style.visibility = 'hidden';
                     document.getElementById('fail').style.visibility = 'visible';
@@ -82,7 +111,6 @@ function saveAd(imageurl) {
             error: function (response) {
                 console.log(response);
             }
-
         });
     } else {
         document.getElementById('success').style.visibility = 'hidden';
@@ -95,36 +123,32 @@ $(document).on('change', '.btn-file :file', function () {
             numFiles = input.get(0).files ? input.get(0).files.length : 1,
             label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
     input.trigger('fileselect', [numFiles, label]);
-
     if (input.get(0).files.length > 0) {
         readURL(this);
         document.getElementById('upload-button').style.visibility = "visible";
         document.getElementById('blah').style.visibility = "visible";
+        document.getElementById('arrow').style.visibility = "visible";
     } else {
         document.getElementById('upload-button').style.visibility = "hidden";
+        document.getElementById('arrow').style.visibility = "hidden";
+        document.getElementById('blah').style.visibility = "hidden";
     }
 });
-
 $(document).ready(function () {
     $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
         var input = $(this).parents('.input-group').find(':text'),
                 log = numFiles > 1 ? numFiles + ' files selected' : label;
-
         if (input.length) {
             input.val(log);
         }
     });
 });
-
-
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-
         reader.onload = function (e) {
             $('#blah').attr('src', e.target.result);
         };
-
         reader.readAsDataURL(input.files[0]);
     }
 }
@@ -145,4 +169,20 @@ function getCheckBoxType() {
     } else {
         return "hour";
     }
+}
+
+function getOrientation() {
+
+    var element = document.getElementById('blah');
+
+    if (hasClass(element, 'north')) {
+        return "north";
+    } else if (hasClass(element, 'east')) {
+        return "east";
+    } else if (hasClass(element, 'west')) {
+        return "west";
+    } else {
+        return "south";
+    }
+
 }

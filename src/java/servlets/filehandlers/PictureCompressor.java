@@ -12,6 +12,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import static servlets.FileHandlerServlet.CHRILLEPATH;
@@ -37,8 +38,8 @@ public class PictureCompressor {
         File file = new File(CHRILLEPATH+path);
 
         ImageIO.write(temp, "jpg", file);
-        
-        return "http://194.47.40.116:8080/Brent/"+ path;
+        String localIP = InetAddress.getLocalHost().getHostAddress();
+        return "http://"+localIP+":8080/Brent/images/"+ path;
     }
 
     public static BufferedImage resizeImage(final Image image, int width, int height) {

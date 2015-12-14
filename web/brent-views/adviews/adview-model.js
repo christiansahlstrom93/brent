@@ -6,6 +6,7 @@ function adrequest() {
     getLocation();
     self.ads = ko.observableArray([]);
     self.ad = ko.observableArray([]);
+    self.imageOrientation = ko.observableArray([]);
     self.showList = ko.observable(true);
     self.displayAd = ko.observable(false);
     self.headerMessage = ko.observable();
@@ -16,19 +17,20 @@ function adrequest() {
     self.username = ko.observable(getCookie("username"));
 
     if (mobilecheck()) {
-        self.imageClass = ko.observable("thumbnail adImagemobile");
+        self.navBarImage = ko.observable("navbar-brand-image");
+        self.newUserButton = ko.observable("btn btn-primary newUserButtonMobile");
         self.containerStyle = ko.observable("container newadframemobile");
-        self.rowHeight = ko.observable("row rowStyleweb");
+        self.rowHeight = ko.observable("row rowStylemobile");
         self.displayimageclass = ko.observable("thumbnail adImagewebdisplay");
         self.mobileAdText = ko.observable("mobileTitle");
     } else {
-        self.rowHeight = ko.observable("row rowStylemobile");
-        self.imageClass = ko.observable("thumbnail adImageweb");
+        self.navBarImage = ko.observable("navbar-brand-image pull-left");
+        self.newUserButton = ko.observable("btn btn-primary newUserButtonWeb");
+        self.rowHeight = ko.observable("row rowStyleweb");
         self.containerStyle = ko.observable("container newadframeweb");
         self.displayimageclass = ko.observable("thumbnail adImagewebdisplay");
         self.mobileAdText = ko.observable("");
     }
-
 
     $.ajax({
         url: "../../AdServlet",
@@ -40,8 +42,10 @@ function adrequest() {
                 function AdViewModel() {
                     if (response.ads[0]) {
                         self.ads(response.ads);
+                        console.log(response.ads);
                         headerMessage(response.ads[0].headermessage);
                     }
+
                     self.gotoAd = function (data) {
                         try {
                             self.showList(false);
@@ -94,6 +98,10 @@ function adrequest() {
                     self.createAd = function () {
                         localStorage.setItem("email", getCookie("email"));
                         window.open("../profile-views/ad/newad.html", "_self");
+                    };
+
+                    self.createUser = function () {
+                        window.open("../profile-views/create-users/createUser.html", "_self");
                     };
                 }
                 ko.applyBindings(AdViewModel());

@@ -2,18 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/web/brent-views/profile-views/create-users/createUser-view.js</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/business/beans/AdBeanLocal.java</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/web/brent-views/profile-views/ad/newad-view-model.js</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/business/beans/UserBean.java</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/web/brent-views/adviews/adview-template.html</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/business/beans/AdBean.java</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/servlets/CreateUserServlet.java</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/business/beans/UserBeanLocal.java</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/business/beans/javahelpers/LoginCheck.java</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/web/brent-views/profile-views/create-users/createUser.html</file>
-            <file>file:/C:/Users/Ant/Documents/NetBeansProjects/brent/src/java/business/beans/javahelpers/CreateUser.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

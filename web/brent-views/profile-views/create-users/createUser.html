@@ -20,65 +20,64 @@ and open the template in the editor.
     <body>
         <nav id="nav" class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand"><img src="http://blogs.fasos.maastrichtuniversity.nl/logoimago/mpiersotte/wp-content/uploads/sites/139/2015/04/mixed-logo.jpg" alt="Dispute Bills"></a>
+                <img class="navbar-brand-image" src="../../../img/logo.png" alt="logo">    
+            </div>
+        </nav>
+        <h3 ALIGN="CENTER">
+            Skapa en ny användare 
+        </h3>
+        <div class="container newadframe" id="border-div">
+            <div  class="container-fluid">
+                <div class="row-fluid">
+                    <div class="span10">
 
-                    </nav>
-                    <h3 ALIGN="CENTER" >
-                        Skapa en ny användare 
-                    </h3>
-                    <div class="container newadframe" id="border-div">
-                        <div  class="container-fluid">
-                            <div class="row-fluid">
-                                <div class="span10">
-
-                                    <p>Namn</p>
-                                    <input id="firstname" type="text"><br><br>
-                                    <p>Efternamn</p>
-                                    <input style=" float: left;" id="lastname" type="text"><br><br>
-                                    <p>Personnummer</p>
-                                    <input style=" float: left;" placeholder="ÅÅÅÅMMDDXXXX" id="personnumber" type="text"><br><br>
-                                    <p>E-post</p>
-                                    <input placeholder="stuffe@spray.se"  id="mail1" type="text" style ="width: 25%" ><br><br>
-                                    <p>Återupprepa E-post</p>
-                                    <input placeholder="stuffe@spray.se" id="mail2"  type="text" style ="width: 25%" ><br><br>
-                                    <p>Telefon</p>
-                                    <input  id="phone" type="text"><br><br>
-                                    <p>Stad</p>
-                                    <input  id="city" type="text"> <br><br>
-                                    <p>Address</p>
-                                    <input  id="address" type="text">  <br><br>    
-                                    <p>Postnummer</p>
-                                    <input id="postalcode" type="text">   <br><br>   
-
-
-                                    <p>Lösenord</p>
-                                    <input id="pass1" type="password">   <br><br>  
-
-                                    <p>Återupprepa lösenord</p>
-                                    <input  id="pass2" type="password"> 
-                                    <div id="divPassMatch" style="visibility: hidden; width: 5%" class="alert alert-danger" role="alert">
-                                        <a class="alert-link"> OK </a>
-                                    </div>
+                        <p>Namn</p>
+                        <input id="firstname" type="text"><br><br>
+                        <p>Efternamn</p>
+                        <input style=" float: left;" id="lastname" type="text"><br><br>
+                        <p>Personnummer</p>
+                        <input style=" float: left;" placeholder="ÅÅÅÅMMDDXXXX" id="personnumber" type="text"><br><br>
+                        <p>E-post</p>
+                        <input placeholder="stuffe@spray.se"  id="mail1" type="text"><br><br>
+                        <p>Återupprepa E-post</p>
+                        <input placeholder="stuffe@spray.se" id="mail2"  type="text"><br><br>
+                        <p>Telefon</p>
+                        <input  id="phone" type="text"><br><br>
+                        <p>Stad</p>
+                        <input  id="city" type="text"> <br><br>
+                        <p>Address</p>
+                        <input  id="address" type="text">  <br><br>    
+                        <p>Postnummer</p>
+                        <input id="postalcode" type="text">   <br><br>   
 
 
-                                </div>
+                        <p>Lösenord</p>
+                        <input id="pass1" type="password">   <br><br>  
 
-                                <div>
-                                    <button class="btn bg-primary" onclick="createUser()">Skapa användare</button> 
+                        <p>Återupprepa lösenord</p>
+                        <input  id="pass2" type="password"> 
+                        <div id="divPassMatch" style="visibility: hidden; width: 5%" class="alert alert-danger" role="alert">
+                            <a class="alert-link"> OK </a>
+                        </div>
 
-                                    <div id="accountSuccess" style="visibility: hidden; " class="alert alert-danger" role="alert" >
-                                        <a id="createSuccess" class="alert-link" >  </a>
-                                    </div>
-                                </div>
 
-                            </div>
-                            <br><br>
+                    </div>
 
+                    <div>
+                        <button class="btn bg-primary" onclick="createUser()">Skapa användare</button> 
+
+                        <div id="accountSuccess" style="visibility: hidden; " class="alert alert-danger" role="alert" >
+                            <a id="createSuccess" class="alert-link" >  </a>
                         </div>
                     </div>
 
-                    <br>
+                </div>
+                <br><br>
 
-                    </body>
-                    </html>
+            </div>
+        </div>
+
+        <br>
+
+    </body>
+</html>

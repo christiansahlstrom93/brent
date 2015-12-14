@@ -22,6 +22,7 @@ public class AdBean implements AdBeanLocal {
             adHandler.connectToServer();
             return adHandler.getAds(location, product);
         } catch (Exception ex) {
+            System.out.println("e " + ex);
         }
 
         return null;
@@ -55,11 +56,11 @@ public class AdBean implements AdBeanLocal {
     }
 
     @Override
-    public boolean addAd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber,String city) {
+    public boolean addAd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber,String city, String imgorientation) {
         try {
             AdHandler adHandler = new AdHandler();
             adHandler.connectToServer();
-            return adHandler.adAdd(email, imageurl, pricetype, ownermail, price, title, adText, firstname, lastname, phonenumber,city);
+            return adHandler.adAdd(email, imageurl, pricetype, ownermail, price, title, adText, firstname, lastname, phonenumber,city,imgorientation);
         } catch (Exception ex) {
             System.out.println("Fel i bönan " + ex);
         }

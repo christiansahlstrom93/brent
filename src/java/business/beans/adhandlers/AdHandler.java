@@ -10,7 +10,7 @@ import org.json.JSONObject;
  */
 public class AdHandler extends Server {
 
-    public boolean adAdd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber, String city) {
+    public boolean adAdd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber, String city, String imgorientation) {
         int id = -1;
 
         try {
@@ -23,8 +23,8 @@ public class AdHandler extends Server {
             }
 
             try {
-                String query = "INSERT into ads (imageurl,ownermail,pricetyp,price,title,adtext,firstname,lastname,phonenumber,ownerid,city)"
-                        + " VALUES('" + imageurl + "','" + ownermail + "','" + pricetype + "'," + price + ",'" + title + "','" + adText + "','" + firstname + "','" + lastname + "','" + phonenumber + "'," + id + ",'" + city + "');";
+                String query = "INSERT into ads (imageurl,ownermail,pricetyp,price,title,adtext,firstname,lastname,phonenumber,ownerid,city,imgorientation)"
+                        + " VALUES('" + imageurl + "','" + ownermail + "','" + pricetype + "'," + price + ",'" + title + "','" + adText + "','" + firstname + "','" + lastname + "','" + phonenumber + "'," + id + ",'" + city + "','" + imgorientation + "');";
 
                 setStatement(getConn().createStatement());
                 getStatement().executeUpdate(query);
@@ -51,9 +51,11 @@ public class AdHandler extends Server {
 
             while (getResultSet().next()) {
                 jo = new JSONObject();
+                String desc = getResultSet().getString("adtext");
+
                 jo.put("headermessage", "Du letar efter " + product + " i " + location);
                 jo.put("title", getResultSet().getString("title"));
-                jo.put("description", getResultSet().getString("adtext"));
+                jo.put("description", desc);
                 jo.put("price", (int) getResultSet().getDouble("price") + ":-");
                 jo.put("location", getResultSet().getString("city"));
                 jo.put("imageURL", getResultSet().getString("imageurl"));
@@ -62,14 +64,19 @@ public class AdHandler extends Server {
                 jo.put("lastname", getResultSet().getString("lastname"));
                 jo.put("email", getResultSet().getString("ownermail"));
                 jo.put("pricetype", getResultSet().getString("pricetyp"));
-                jo.put("ownerid",getResultSet().getInt("ownerid"));
-                jo.put("salesmessage","Hyrs ut utav " + getResultSet().getString("firstname"));
+                jo.put("ownerid", getResultSet().getInt("ownerid"));
+
+                if (desc.length() > 30) {
+                    jo.put("preDesc", desc.substring(0, 30)+"...");
+                } else {
+                    jo.put("preDesc", desc);
+                }
                 if (getResultSet().getString("pricetyp").toLowerCase().equals("day")) {
                     jo.put("displayprice", (int) getResultSet().getDouble("price") + ":-/dag");
                 } else {
                     jo.put("displayprice", (int) getResultSet().getDouble("price") + ":-/timme");
                 }
-                
+                jo.put("imgorientation", getResultSet().getString("imgorientation"));
                 ja.put(jo);
             }
         } catch (Exception e) {

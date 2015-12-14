@@ -48,11 +48,13 @@ public class AdServlet extends HttpServlet {
             System.out.println("************");
 
             JSONObject mainObj = new JSONObject();
+
             mainObj.put("ads", adBean.getAdListData(location, search));
             out.print(mainObj);
-            
+
         } catch (Exception e) {
 
         }
     }
+
 }

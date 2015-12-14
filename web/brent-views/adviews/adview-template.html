@@ -19,9 +19,9 @@
 
         <nav id="nav" class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand"><img src="http://blogs.fasos.maastrichtuniversity.nl/logoimago/mpiersotte/wp-content/uploads/sites/139/2015/04/mixed-logo.jpg" alt="Dispute Bills"></a>
-                </div>
+
+                <img data-bind="css: navBarImage" src="../../img/logo.png" alt="logo">
+
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input id="product" type="text" class="form-control" placeholder="Exempel: borrmaskin">
@@ -29,12 +29,17 @@
                         <br>
                         <!-- /ko -->
                         <input id="location" type="text" class="form-control" placeholder="Exempel: Malmö">
+                        <!-- ko if: isMobile -->
+                        <br>
+                        <!-- /ko -->
+                        <button class="btn btn-default" data-bind="click: searchAds">Sök</button>
                     </div>
-                    <button type="submit" class="btn btn-default" data-bind="click: searchAds">Sök</button>
                 </form>
             </div>
 
             <!-- ko ifnot: isLoggedIn -->
+            <button type="submit" data-bind="css: newUserButton, click:createUser ">Skapa användare</button>
+
             <div data-bind="css: loginClass" class="dropdown">
                 <a id="label" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true">
                     Logga in  
@@ -42,8 +47,8 @@
 
                 <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
                     <li>
-                        <input id="username" type="text" class="form-control" placeholder="Användarnamn">
-                        <input style="margin-top: 4px;" id="password" type="text" class="form-control" placeholder="Lösenord">
+                        <input id="username" type="email" class="form-control" placeholder="Email">
+                        <input style="margin-top: 4px;" id="password" type="password" class="form-control" placeholder="Lösenord">
                         <br>
                     </li>
                     <button data-bind="click: login" type="login" class="btn btn-success pull-right" data-bind="click: login">Logga in</button>
@@ -75,18 +80,24 @@
                             <section data-bind="foreach: {data: ads}">
                                 <div data-bind="css: rowHeight">
                                     <div class = "col-sm-6 col-md-3">
-                                        <a href = "#" >
-                                            <img data-bind="attr:{src: imageURL}, click: gotoAd, css: imageClass" alt = "">
+                                        <a style="float: left; " href = "#" >
+                                            <!-- ko if: isMobile -->
+                                            <img class="thumbnail adImagemobile" data-bind="attr:{src: imageURL}, click: gotoAd, css:  imgorientation" alt = "">
+                                            <!-- /ko -->
+                                            <!-- ko if: isComputer -->
+                                            <img class="thumbnail adImageweb" data-bind="attr:{src: imageURL}, click: gotoAd, css:  imgorientation" alt = "">
+                                            <!-- /ko -->
                                         </a>
                                     </div>
-                                    <div class = "caption">
-                                        <p id="name-link" data-bind="text: firstname"></p>
-                                        <p id="location-link" data-bind="text: location, visible: isComputer"></p>
-                                        <h4 id="title" data-bind="text: title"></h4>
-                                        <p id="description" data-bind="text: price"></p>
-                                    </div>
+                                    <h4 id="title" data-bind="text: title"></h4>
+                                    <p id="name-link" data-bind="text: firstname"></p>
+                                    <br><br>
+                                    <p style="float: left;">&nbsp;</p>
+                                    <p data-bind="text: preDesc"></p>
                                 </div>
-                                <br><hr>
+                                <p id="location-link" data-bind="text: location"></p>
+                                <p id="price" data-bind="text: price"></p>
+                                <hr>
                             </section>
                         </div>
 
@@ -95,21 +106,21 @@
                             <p><a href="#" class="btn btn-primary" role="button" data-bind="click: goBack">Tillbaka</a>
                             <section id="ad" data-bind="foreach: {data: ad}">
                                 <div data-bind="visible:isMobile " class="col-sm-6 col-md-3">
-                                    <a href="#" class="thumbnail" >
-                                        <img data-bind="attr:{src: imageURL}, click: gotoAd" alt = "">
-                                    </a>
+                                    <img class="thumbnail adImagemobiledisplay" data-bind="attr:{src: imageURL}, click: gotoAd, css: imgorientation" alt = "">
                                 </div>
                                 <div data-bind="visible:isComputer" class="row">
-                                    <img data-bind="attr:{src: imageURL}, css: displayimageclass">
+                                    <img class="thumbnail adImagewebdisplay" data-bind="attr:{src: imageURL}, css: imgorientation">
                                 </div>
                                 <div class = "caption">
                                     <p id="location-link-ad" data-bind="text: location"></p>
                                     <h2 style="text-align:left;float:left;" data-bind="text: title, css: mobileAdText"></h2>
                                     <h3 style="text-align:right;float:right;" data-bind="text: displayprice, css: mobileAdText"></h3>
                                     <br style="clear:both;"/>
-                                    <a href="#" id="location-link-ad" data-bind="text: salesmessage"></a>
-                                    <hr>
-                                    <div class="jumbotron">
+                                    <p style="float: left;">Hyrs ut utav &nbsp;</p>
+                                    <a href="#" id="location-link-ad" style="float: left;" data-bind="text: firstname"></a>
+                                    <a href="#" id="location-link-ad" style="float: right;">Mejla</a>
+                                    <br><hr>
+                                    <div style="background-color:#81F79F !important;" class="jumbotron">
                                         <h5 id="description" data-bind="text: description"></h5>
                                     </div>
                                 </div>

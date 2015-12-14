@@ -2,8 +2,20 @@ section#ad .thumbnail{
     margin: 0 auto;
 }
 
+.newUserButtonWeb {
+    position: absolute;
+    right:100px;
+    top: 18%;
+}
+
+.newUserButtonMobile {
+    position: absolute;
+    right: 100px;
+    top: 7%;
+}
+
 #body {
-    background:gainsboro;
+    background:#E3F6CE;
 }
 
 #border-div {
@@ -14,17 +26,35 @@ section#ad .thumbnail{
     text-align: left;
 }
 
+#price {
+    text-align: right;
+    bottom: 0px;
+}
+
 #title {
-    text-align: left;
+    position: static;
+    margin-left: 10px;
+    float: left;
 }
 
 #location-link {
-    color: #0000CD;
+    color: #0000CD;  
+    float:left;
+    position: static;
+    margin-left: 10px;
 }
 
 #name-link {
     color: lightgrey;
     text-align: right;
+    position: static;
+    float: right;
+}
+
+#adtext-desc {
+    float:left;
+    position: static;
+    margin-left: 10px;
 }
 
 #location-link-ad {
@@ -33,14 +63,15 @@ section#ad .thumbnail{
 }
 
 #nav {
-    background:whitesmoke;
+    background:#22CD33;
+    opacity: 0.7;
 }
 
-.navbar-brand>img {
-    max-height: 100%;
-    height: 100%;
-    width: auto;
-    margin: 0 auto;
+.navbar-brand-image {
+    left: 0px;
+    height: 50px;
+    width: 80px;
+    top: 10%;
 }
 
 .rightPhone {
@@ -105,9 +136,14 @@ input[readonly] {
     width: 450px; height: 450px;
     margin: auto;
 }
+
+.adImagemobiledisplay {
+    width: 250px; height: 250px;
+    margin: auto;
+}
 .adImagemobile {
     margin: auto;  
-    width: 60%; height: 100px;
+    width: 130px; height: 130px;
 }
 
 .rowStyleweb {
@@ -121,4 +157,26 @@ input[readonly] {
 .mobileTitle {
     font-size: 130%;
     color: #000;
+}
+
+.north {
+    transform:rotate(0deg);
+    -ms-transform:rotate(0deg); /* IE 9 */
+    -webkit-transform:rotate(0deg); /* Safari and Chrome */
+}
+.west {
+    transform:rotate(90deg);
+    -ms-transform:rotate(90deg); /* IE 9 */
+    -webkit-transform:rotate(90deg); /* Safari and Chrome */
+}
+.south {
+    transform:rotate(180deg);
+    -ms-transform:rotate(180deg); /* IE 9 */
+    -webkit-transform:rotate(180deg); /* Safari and Chrome */
+
+}
+.east {
+    transform:rotate(270deg);
+    -ms-transform:rotate(270deg); /* IE 9 */
+    -webkit-transform:rotate(270deg); /* Safari and Chrome */
 }

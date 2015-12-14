@@ -53,6 +53,7 @@ public class SaveAdServlet extends HttpServlet {
             String adText;
             String phone;
             String city;
+            String imgorientation;
             
             processRequest(request, response);
             CustomJsonParser parser = new CustomJsonParser("mail", request);
@@ -75,9 +76,11 @@ public class SaveAdServlet extends HttpServlet {
             imageurl = parser.getString();
             parser.setKey("place");
             city = parser.getString();
+            parser.setKey("imgorientation");
+            imgorientation = parser.getString();
             
             imageurl = imageurl.replace("\\", "\\\\\\");
-            boolean state = adBean.addAd(email, imageurl, pricetype, email, price, title, adText,firstname,lastname,phone,city);
+            boolean state = adBean.addAd(email, imageurl, pricetype, email, price, title, adText,firstname,lastname,phone,city,imgorientation);
                         
             PrintWriter out = response.getWriter();
             JSONObject json = new JSONObject();
