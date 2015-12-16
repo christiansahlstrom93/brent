@@ -1,4 +1,3 @@
-
 package business.beans.usercredentials;
 
 import business.beans.javahelpers.Server;
@@ -27,13 +26,21 @@ public class UserInfo extends Server {
                 jo.put("phone", getResultSet().getString("phonenumber"));
                 jo.put("city", getResultSet().getString("city"));
                 jo.put("firstname", getResultSet().getString("firstname"));
+                jo.put("address", getResultSet().getString("address"));
+                jo.put("phonenumber", getResultSet().getString("phonenumber"));
+                jo.put("areacode", getResultSet().getString("areacode"));
+                jo.put("rate", "(Betyg " + getResultSet().getDouble("rate") + " av totalt " + getResultSet().getInt("votes") + " röster)");
+                jo.put("votes", getResultSet().getInt("votes"));
+                jo.put("userImageurl", getResultSet().getString("imageurl"));
+                jo.put("imageorientation", getResultSet().getString("imageorientation"));
+
                 ja.put(jo);
             }
 
         } catch (Exception e) {
             System.out.println("ERROR I USERINFO " + e);
         }
-        
+
         return ja;
     }
 

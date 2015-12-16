@@ -78,8 +78,10 @@ function adrequest() {
                                     if (response != "failed") {
                                         setCookie("username", response, 365);
                                         setCookie("email", usr, 365);
-                                        isLoggedIn(true);
-                                        username(response);
+                                        localStorage.setItem("email", getCookie("email"));
+                                        localStorage.setItem("username", response);
+                                        self.isLoggedIn(true);
+                                        self.username(response);
                                     } else {
 
                                     }
@@ -91,8 +93,9 @@ function adrequest() {
 
                     self.logout = function () {
                         setCookie("username", "", 365);
-                        isLoggedIn(false);
-                        username("");
+                        localStorage.setItem("username", "");
+                        self.isLoggedIn(false);
+                        self.username("");
                     };
 
                     self.createAd = function () {
@@ -102,6 +105,11 @@ function adrequest() {
 
                     self.createUser = function () {
                         window.open("../profile-views/create-users/createUser.html", "_self");
+                    };
+
+                    self.myPages = function () {
+                        localStorage.setItem("username", getCookie("username"));
+                        window.open("../profile-views/user-view/user-view-template.html", "_self");
                     };
                 }
                 ko.applyBindings(AdViewModel());

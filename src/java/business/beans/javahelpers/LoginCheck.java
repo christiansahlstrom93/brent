@@ -11,10 +11,8 @@ package business.beans.javahelpers;
  */
 public class LoginCheck extends Server {
 
-    String result = "failed";
-
     public String Login(String username, String usrPassword) throws ClassNotFoundException {
-
+        String result = "failed";
         try {
             String args = "SELECT password, firstname FROM Users WHERE email ='" + username + "';";
             setStatement(getConn().createStatement());

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Random;
 import javax.imageio.ImageIO;
-import static servlets.FileHandlerServlet.CHRILLEPATH;
 
 /**
  *
@@ -23,7 +22,7 @@ import static servlets.FileHandlerServlet.CHRILLEPATH;
  */
 public class PictureCompressor {
 
-    public static String resize(BufferedImage image) throws IOException {
+    public static String resize(BufferedImage image,String fPath, String returnPath) throws IOException {
         Random random = new Random();
        
         String path = "mfile" + random.nextInt(40302030)+".jpeg";
@@ -35,11 +34,11 @@ public class PictureCompressor {
         } else {
             temp = resizeImage(image, 311, 400);
         }
-        File file = new File(CHRILLEPATH+path);
+        File file = new File(fPath+path);
 
         ImageIO.write(temp, "jpg", file);
         String localIP = InetAddress.getLocalHost().getHostAddress();
-        return "http://"+localIP+":8080/Brent/images/"+ path;
+        return "http://"+localIP+returnPath+ path;
     }
 
     public static BufferedImage resizeImage(final Image image, int width, int height) {
