@@ -6,6 +6,7 @@
 package business.beans;
 
 import javax.ejb.Local;
+import org.json.JSONArray;
 
 /**
  *
@@ -14,6 +15,10 @@ import javax.ejb.Local;
 @Local
 public interface UserBeanLocal {
 
-    String createUser(String username, String firstname, String email, String password, String phonenumber, String address, String city, String areacode);
+    String createUser(String username, String firstname, String email, String password, String phonenumber, String address, String city, String areacode, String imgURL, String orientation);
+
+    JSONArray getMyPagesInfo(String email);
+
+    JSONArray getUserCredentials(String usrName);
 
 }

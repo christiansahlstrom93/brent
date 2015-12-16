@@ -67,7 +67,7 @@ public class AdHandler extends Server {
                 jo.put("ownerid", getResultSet().getInt("ownerid"));
 
                 if (desc.length() > 30) {
-                    jo.put("preDesc", desc.substring(0, 30)+"...");
+                    jo.put("preDesc", desc.substring(0, 30) + "...");
                 } else {
                     jo.put("preDesc", desc);
                 }
@@ -84,6 +84,23 @@ public class AdHandler extends Server {
         }
 
         return ja;
+    }
+
+    public boolean updateAdd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber, String city, String imgorientation, int adId) {
+
+        try {
+            String query = "UPDATE ads set ownermail = '"+email+"',imageurl = '"+imageurl+"',pricetyp = '"+pricetype+"'"
+                    + ",price = "+price+",title = '"+title+"',adtext = '"+adText+"',firstname = '"+firstname+"',lastname = '"+lastname+"',phonenumber = '"+phonenumber+"'"
+                    + ",city = '"+city+"',imgorientation = '"+imgorientation+"' where adid = " +adId;
+
+            setStatement(getConn().createStatement());
+            getStatement().executeUpdate(query);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error i update " + e);
+        }
+
+        return false;
     }
 
 }

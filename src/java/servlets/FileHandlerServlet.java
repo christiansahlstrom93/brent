@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import org.json.JSONObject;
 import servlets.filehandlers.PictureCompressor;
 
 /**
@@ -26,7 +25,7 @@ import servlets.filehandlers.PictureCompressor;
 @MultipartConfig
 public class FileHandlerServlet extends HttpServlet {
 
-    public static String CHRILLEPATH = "C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\web\\";
+    public static String CHRILLEPATH = "C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\web\\images\\";
     public static String MAURPATH = "C:\\Users\\Ant\\Documents\\NetBeansProjects\\brent\\web\\";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -61,16 +60,16 @@ public class FileHandlerServlet extends HttpServlet {
                 bos.flush();
             }
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println("hooker" + ex);
         }
         //TODO ändra path
         BufferedImage image = ImageIO.read(new File(CHRILLEPATH + "mfile.jpg"));
 
         try {
             PrintWriter out = response.getWriter();
-            out.print(PictureCompressor.resize(image));
+            out.print(PictureCompressor.resize(image,CHRILLEPATH,":8080/Brent/images/"));
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.println("kug" +ex);
         }
     }
 

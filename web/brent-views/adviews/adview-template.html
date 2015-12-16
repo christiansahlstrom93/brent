@@ -25,9 +25,10 @@
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input id="product" type="text" class="form-control" placeholder="Exempel: borrmaskin">
-                        <!-- ko if: isMobile -->
+                        <!-- ko if: isComputer -->
                         <br>
                         <!-- /ko -->
+                        <br>
                         <input id="location" type="text" class="form-control" placeholder="Exempel: Malmö">
                         <!-- ko if: isMobile -->
                         <br>
@@ -38,9 +39,13 @@
             </div>
 
             <!-- ko ifnot: isLoggedIn -->
-            <button type="submit" data-bind="css: newUserButton, click:createUser ">Skapa användare</button>
 
             <div data-bind="css: loginClass" class="dropdown">
+
+                <a id="create-user" data-bind="click:createUser " role="button" aria-haspopup="true">
+                    Skapa användare &nbsp
+                </a>
+
                 <a id="label" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true">
                     Logga in  
                 </a>
@@ -61,7 +66,7 @@
                 <a data-bind="text: username" id="dLabel" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true"></a>
                 <span class="caret"></span>
                 <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
-                    <li><a href="#">Mina annonser</a></li>
+                    <li><a data-bind="click: myPages" href="#">Mina sidor</a></li>
                     <li><a data-bind="click: createAd" href="#">Lägg till annons</a></li>
                     <li><a href="#">Kontoinställningar</a></li>
                     <li><a href="#">Mina kontakter</a></li>
