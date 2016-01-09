@@ -1,9 +1,11 @@
 function init() {
     var self = this;
-    var email = localStorage.getItem("email");
-    var username = localStorage.getItem("username");
+    var email = sessionStorage.getItem("email");
+    var username = sessionStorage.getItem("username");
     var thumb;
 
+    self.myName = ko.observable(localStorage.getItem("username"));
+    self.isVisiting = ko.observable(localStorage.getItem("username") != username);
     self.username = ko.observable(username);
     self.firstname = ko.observable();
     self.lastname = ko.observable();
@@ -18,8 +20,10 @@ function init() {
     self.ads = ko.observable([]);
     self.adToBeEdit = ko.observable([]);
     self.isMobile = ko.observable(mobilecheck());
+    self.isComputer = ko.observable(!mobilecheck());
     self.editAd = ko.observable(true);
     self.startEdit = ko.observable(false);
+    self.preview = ko.observable(false);
     self.imageOrient = ko.observable();
     self.adImageUrl = ko.observable();
     self.thumbnail = ko.observable();
@@ -28,12 +32,26 @@ function init() {
         self.thumbNails = ko.observable("thumbnail webThumbMyPages");
         self.loginClass = ko.observable("rightPhoneMyPages");
         thumb = "thumbnail userImagemobile pull-left";
+        self.containerStyle = ko.observable("container newadframemobile");
+        self.popUpDiv = ko.observable("popupContactMobile");
+        self.closeButtonDiv = ko.observable("closemobile");
     } else {
         self.loginClass = ko.observable("rightWeb");
         self.thumbnail = ko.observable("thumbnail adImagemobiledisplay pull-left");
         thumb = "thumbnail adImagemobiledisplay pull-left";
         self.thumbNails = ko.observable("thumbnail webThumbMyPages");
         self.editadThumb = ko.observable("thumbnail newadImageweb ");
+        self.containerStyle = ko.observable("container newadframeweb");
+        self.popUpDiv = ko.observable("popupContact");
+        self.closeButtonDiv = ko.observable("close");
+    }
+
+    if (localStorage.getItem("username") != username) {
+        self.adHeadline = ko.observable(username + "s senaste annonser");
+        self.ratingLine = ko.observable(username + "s rating");
+    } else {
+        self.adHeadline = ko.observable("Dina senaste annonser");
+        self.ratingLine = ko.observable("Din rating");
     }
 
     $.ajax({
@@ -44,21 +62,21 @@ function init() {
         success: function (response) {
             $(function () {
                 function UserViewModel() {
-                    console.log(response);
                     self.ads(response.ads);
                     self.firstname(response.data[0].firstname);
                     self.lastname(response.data[0].lastname);
                     self.address(response.data[0].address);
                     self.phonenumber(response.data[0].phonenumber);
                     self.areacode(response.data[0].areacode);
-                    self.rate(response.data[0].rate);
+                    self.rate(response.data[0].rateText);
                     self.votes(response.data[0].votes);
                     self.city(response.data[0].city);
                     self.userImageurl(response.data[0].userImageurl);
 
-                    self.thumbnail(thumb + " " +response.data[0].imageorientation);
-                    
+                    self.thumbnail(thumb + " " + response.data[0].imageorientation);
+
                     handleRates(response.data[0].rate);
+
 
                     self.logout = function () {
                         setCookie("username", "", 365);
@@ -66,7 +84,6 @@ function init() {
                         history.back();
                     };
                     self.createAd = function () {
-                        localStorage.setItem("email", getCookie("email"));
                         window.open("../ad/newad.html", "_self");
                     };
                     self.search = function () {
@@ -74,25 +91,31 @@ function init() {
                     };
                     self.goBack = function () {
                         self.editAd(true);
+                        self.preview(false);
                         self.startEdit(false);
                     };
                     self.editAds = function (data) {
-                        console.log(data);
-                        sessionStorage.setItem("adid", data.adid);
-                        sessionStorage.setItem("imageURL", data.imageURL);
-                        self.adToBeEdit(data);
-                        self.editAd(false);
-                        self.startEdit(true);
-                        self.imageOrient(data.imgorientation);
-                        self.adImageUrl(data.imageURL);
+                        if (localStorage.getItem("username") === username) {
+                            sessionStorage.setItem("adid", data.adid);
+                            sessionStorage.setItem("imageURL", data.imageURL);
+                            self.adToBeEdit(data);
+                            self.editAd(false);
+                            self.startEdit(true);
+                            self.imageOrient(data.imgorientation);
+                            self.adImageUrl(data.imageURL);
 
-                        document.getElementById("adtitle").value = data.title;
-                        document.getElementById("priceField").value = parseFloat(data.price);
+                            document.getElementById("adtitle").value = data.title;
+                            document.getElementById("priceField").value = parseFloat(data.price);
 
-                        if (data.pricetype === "day") {
-                            handleCheckBox('day');
+                            if (data.pricetype === "day") {
+                                handleCheckBox('day');
+                            } else {
+                                handleCheckBox('hour');
+                            }
                         } else {
-                            handleCheckBox('hour');
+                            self.preview(true);
+                            self.editAd(false);
+                            self.adToBeEdit(data);
                         }
                     };
                     self.saveAdBasic = function () {
@@ -109,9 +132,6 @@ function init() {
                         var imageURL = sessionStorage.getItem("imageURL");
                         var adid = sessionStorage.getItem("adid");
 
-                        console.log(adid + "  " + imageURL);
-
-
                         if (adtext && firstname && lastname && mail && phone && place && price && title && pricetype && adtext) {
                             $.ajax({
                                 url: "../../../EditAdServlet",
@@ -121,7 +141,6 @@ function init() {
                                     phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext, imageurl: imageURL
                                     , imgorientation: imageorientation, adid: adid},
                                 success: function (response) {
-                                    console.log(response);
                                     if (response.state) {
                                         document.getElementById('success').style.visibility = 'visible';
                                         document.getElementById('fail').style.visibility = 'hidden';
@@ -136,7 +155,6 @@ function init() {
                                     }
                                 },
                                 error: function (response) {
-                                    console.log(response);
                                 }
                             });
                         } else {
@@ -165,6 +183,12 @@ function init() {
                             element.className = className + " east";
                         }
                     };
+
+                    self.sendMail = function (data) {
+                        sessionStorage.setItem("mailrecipient", data.email);
+                        document.getElementById('abc').style.display = "block";
+                        document.getElementById('inputpopmail').value = localStorage.getItem("email");
+                    };
                 }
 
                 ko.applyBindings(UserViewModel());
@@ -181,7 +205,7 @@ function handleRates(rates) {
         document.getElementById("star-1").checked = true;
     } else if (rates <= 2.4) {
         document.getElementById("star-2").checked = true;
-    } else if (rates <= 3.5) {
+    } else if (rates <= 3.4) {
         document.getElementById("star-3").checked = true;
     } else if (rates <= 4.4) {
         document.getElementById("star-4").checked = true;
@@ -199,7 +223,6 @@ function handleCheckBox(id) {
         $("#hourbox").prop("checked", true);
     }
 }
-
 $(document).on('change', '.btn-file :file', function () {
     var input = $(this),
             numFiles = input.get(0).files ? input.get(0).files.length : 1,
@@ -220,8 +243,7 @@ $(document).on('change', '.btn-file :file', function () {
 });
 $(document).ready(function () {
     $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-        var input = $(this).parents('.input-group').find(':text'),
-                log = numFiles > 1 ? numFiles + ' files selected' : label;
+        var input = $(this).parents('.input-group').find(':text'), log = numFiles > 1 ? numFiles + ' files selected' : label;
         if (input.length) {
             input.val(log);
         }
@@ -229,11 +251,9 @@ $(document).ready(function () {
 });
 
 $(function () {
-    $('#upload-form').ajaxForm({
-        success: function (msg) {
+    $('#upload-form').ajaxForm({success: function (msg) {
             saveAd(msg);
-        },
-        error: function (msg) {
+        }, error: function (msg) {
         }
     });
 });
@@ -286,7 +306,6 @@ function saveAd(imageurl) {
     var adtext = $("#adtext").val();
     var imageorientation = getOrientation();
     var adid = sessionStorage.getItem("adid");
-    console.log(adid);
     if (adtext && firstname && lastname && mail && phone && place && price && title && pricetype && adtext && imageurl) {
         $.ajax({
             url: "../../../EditAdServlet",
@@ -296,7 +315,6 @@ function saveAd(imageurl) {
                 phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext, imageurl: imageurl
                 , imgorientation: imageorientation, adid: adid},
             success: function (response) {
-                console.log(response);
                 if (response.state) {
                     document.getElementById('success').style.visibility = 'visible';
                     document.getElementById('fail').style.visibility = 'hidden';
@@ -310,11 +328,34 @@ function saveAd(imageurl) {
                 }
             },
             error: function (response) {
-                console.log(response);
             }
         });
     } else {
         document.getElementById('success').style.visibility = 'hidden';
         document.getElementById('fail').style.visibility = 'visible';
+    }
+}
+
+function div_hide() {
+    document.getElementById('abc').style.display = "none";
+}
+
+function check_empty() {
+    if (document.getElementById('inputpop').value == "" || document.getElementById('inputpopmail').value == "" || document.getElementById('textareapop').value == "") {
+        alert("Fyll i alla fälten");
+    } else {
+        var recipient = sessionStorage.getItem("mailrecipient");
+        var sender = document.getElementById('inputpopmail').value;
+        var name = document.getElementById('inputpop').value;
+        var msg = document.getElementById('textareapop').value;
+
+        $.ajax({
+            url: "../../../MailServlet",
+            type: 'POST',
+            data: {sender: sender, recepeint: recipient, name: name, msg: msg},
+            success: function (response) {
+                div_hide();
+            }
+        });
     }
 }

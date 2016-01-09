@@ -8,7 +8,9 @@
         <script src="../bootstrap.min.js"></script>
         <script src="../knockout.js"></script>
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="adstyles.css">
+        <link rel="stylesheet" href="../main/popups.css">
         <script src="adview-model.js"></script>
     </head>
 
@@ -101,7 +103,7 @@
                                     <p data-bind="text: preDesc"></p>
                                 </div>
                                 <p id="location-link" data-bind="text: location"></p>
-                                <p id="price" data-bind="text: price"></p>
+                                <p id="price" data-bind="text: displayprice"></p>
                                 <hr>
                             </section>
                         </div>
@@ -111,7 +113,7 @@
                             <p><a href="#" class="btn btn-primary" role="button" data-bind="click: goBack">Tillbaka</a>
                             <section id="ad" data-bind="foreach: {data: ad}">
                                 <div data-bind="visible:isMobile " class="col-sm-6 col-md-3">
-                                    <img class="thumbnail adImagemobiledisplay" data-bind="attr:{src: imageURL}, click: gotoAd, css: imgorientation" alt = "">
+                                    <img class="thumbnail adImagemobiledisplay" data-bind="attr:{src: imageURL}, css: imgorientation" alt = "">
                                 </div>
                                 <div data-bind="visible:isComputer" class="row">
                                     <img class="thumbnail adImagewebdisplay" data-bind="attr:{src: imageURL}, css: imgorientation">
@@ -122,17 +124,51 @@
                                     <h3 style="text-align:right;float:right;" data-bind="text: displayprice, css: mobileAdText"></h3>
                                     <br style="clear:both;"/>
                                     <p style="float: left;">Hyrs ut utav &nbsp;</p>
-                                    <a href="#" id="location-link-ad" style="float: left;" data-bind="text: firstname"></a>
-                                    <a href="#" id="location-link-ad" style="float: right;">Mejla</a>
+                                    <a href="#" id="location-link-ad" style="float: left;" data-bind="text: firstname, click: gotoProfile"></a>
+                                    <a href="#" id="location-link-ad" data-bind="click:sendMail" style="float: right;">Mejla</a>
+                                    <br>
                                     <br><hr>
                                     <div style="background-color:#81F79F !important;" class="jumbotron">
                                         <h5 id="description" data-bind="text: description"></h5>
                                     </div>
                                 </div>
                             </section>
+                            <div class="jumbotron">
+                                <h4 style=" text-align: center;">Info om uthyraren</h4><hr>
+                                <h5 style=" text-align: center;" data-bind="text: rateText"></h5>
+                                <div class="stars" style="width: 60%;">
+                                    <form action="">
+                                        <input class="star star-5" id="star-5" type="radio" name="star"/>
+                                        <label class="star star-5" for="star-5"></label>
+                                        <input class="star star-4" id="star-4" type="radio" name="star"/>
+                                        <label class="star star-4" for="star-4"></label>
+                                        <input class="star star-3" id="star-3" type="radio" name="star"/>
+                                        <label class="star star-3" for="star-3"></label>
+                                        <input class="star star-2" id="star-2" type="radio" name="star"/>
+                                        <label class="star star-2" for="star-2"></label>
+                                        <input class="star star-1" id="star-1" type="radio" name="star"/>
+                                        <label class="star star-1" for="star-1"></label>
+                                    </form>
+                                </div>
+                                <br><br>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="abc">
+            <div data-bind="css: popUpDiv">
+                <form  action="#" id="formpop" method="post" name="form">
+                    <img data-bind="css: closeButtonDiv" src="../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide()">
+                    <h2 id="h2pop">Skicka meddelande</h2>
+                    <hr id="hrpop">
+                    <input id="inputpop" name="name" placeholder="Namn" type="text">
+                    <br>
+                    <input id="inputpopmail" name="mail" placeholder="Email" type="text">
+                    <textarea id="textareapop" name="message" placeholder="Meddelande"></textarea>
+                    <a onclick="check_empty()" id="submitpop">Skicka</a>
+                </form>
             </div>
         </div>
     </body>

@@ -42,7 +42,6 @@ function createUser(imageurl) {
     var matchPass = false;
     var matchPerson = false;
     if (email1 == email2) {
-        console.log("email email", "email")
         matchEmail = true;
 
     } else {
@@ -52,7 +51,6 @@ function createUser(imageurl) {
         document.getElementById("createSuccess").text = "De angivna epost addresserna matchar inte";
     }
     if (password1 == password2) {
-        console.log("password", "password");
         matchPass = true;
 
     } else {
@@ -74,7 +72,6 @@ function createUser(imageurl) {
 
     if (matchPerson && matchPass && matchEmail && firstName && lastName && personNumber && email1 && email2 && phoneNumber && city
             && address && postalCode && password1 && password2) {
-        console.log("funkar", "funkar");
         $.ajax({
             url: "../../../CreateUserServlet",
             type: 'POST',

@@ -25,7 +25,7 @@ import servlets.filehandlers.PictureCompressor;
 @MultipartConfig
 public class FileHandlerServlet extends HttpServlet {
 
-    public static String CHRILLEPATH = "C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\web\\images\\";
+    public static String CHRILLEPATH = "/glassfish4/glassfish/domains/domain1/applications/Brent_Images/images/";
     public static String MAURPATH = "C:\\Users\\Ant\\Documents\\NetBeansProjects\\brent\\web\\";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -60,14 +60,14 @@ public class FileHandlerServlet extends HttpServlet {
                 bos.flush();
             }
         } catch (Exception ex) {
-            System.out.println("hooker" + ex);
+            System.out.println("Error " + ex);
         }
         //TODO ändra path
         BufferedImage image = ImageIO.read(new File(CHRILLEPATH + "mfile.jpg"));
 
         try {
             PrintWriter out = response.getWriter();
-            out.print(PictureCompressor.resize(image,CHRILLEPATH,":8080/Brent/images/"));
+            out.print(PictureCompressor.resize(image,CHRILLEPATH,":8080/Brent_Images/images/"));
         } catch (Exception ex) {
             System.out.println("kug" +ex);
         }

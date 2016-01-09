@@ -30,15 +30,15 @@
                         <h3 class="centertext" data-bind="text: admessage"></h3>
                         <br><br><br>
                         <p>Namn</p>
-                        <input data-bind="value: firstname" id="firstname" type="text"><br><br>
+                        <input data-bind="value: firstname" id="firstname" type="text" readonly><br><br>
                         <p>Efternamn</p>
-                        <input style=" float: left;" data-bind="value: lastname" id="lastname" type="text"><br><br>
+                        <input style=" float: left;" data-bind="value: lastname" id="lastname" type="text" readonly><br><br>
                         <p>E-post</p>
-                        <input data-bind="value: mail" id="mail" type="email"><br><br>
+                        <input data-bind="value: mail" id="mail" type="email" readonly><br><br>
                         <p>Telefon</p>
                         <input data-bind="value: phone" id="phone" type="text"><br><br>
                         <p>Plats</p>
-                        <input data-bind="value: place" id="place" type="text">              
+                        <input data-bind="value: place" id="place" type="text" readonly>              
                         <hr>
                         <label onclick="handleCheckBox('day')" class="checkbox-inline"><input id="daybox" type="checkbox" checked>Per dag</label>
                         <label onclick="handleCheckBox('hour')" class="checkbox-inline"><input id="hourbox" type="checkbox" value="">Per timme</label>

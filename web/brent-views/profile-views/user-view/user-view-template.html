@@ -12,6 +12,7 @@
         <script src="user-view-model.js"></script>
         <link rel="stylesheet" href="../../adviews/adstyles.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../../main/popups.css">
         <script src="../../jquery.form.js"></script>
 
     </head>
@@ -26,7 +27,7 @@
             </div>
 
             <div data-bind="css: loginClass" class="dropdown">
-                <a data-bind="text: username" id="dLabel" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true"></a>
+                <a data-bind="text: myName" id="dLabel" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true"></a>
                 <span class="caret"></span>
                 <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
                     <li><a data-bind="click: search" href="#">Sök</a></li>
@@ -43,44 +44,46 @@
                     <div class="span10">
                         <h4 style="text-align: center;" data-bind="text: username"></h4>
                         <img data-bind="attr:{src: userImageurl},css: thumbnail" alt="">
-                        <div class="stars">
-                            <form action="">
-                                <input class="star star-5" id="star-5" type="radio" name="star"/>
-                                <label class="star star-5" for="star-5"></label>
-                                <input class="star star-4" id="star-4" type="radio" name="star"/>
-                                <label class="star star-4" for="star-4"></label>
-                                <input class="star star-3" id="star-3" type="radio" name="star"/>
-                                <label class="star star-3" for="star-3"></label>
-                                <input class="star star-2" id="star-2" type="radio" name="star"/>
-                                <label class="star star-2" for="star-2"></label>
-                                <input class="star star-1" id="star-1" type="radio" name="star"/>
-                                <label class="star star-1" for="star-1"></label>
-                            </form>
+                        <div style="background: #ffffff" class="jumbotron">
+                            <h4 style=" text-align: center;"data-bind="text: ratingLine"></h4><hr>
+                            <h5 style=" text-align: center;" data-bind="text: rate"></h5>
+                            <div class="stars" style="width: 50%;">
+                                <form action="">
+                                    <input class="star star-5" id="star-5" type="radio" name="star"/>
+                                    <label class="star star-5" for="star-5"></label>
+                                    <input class="star star-4" id="star-4" type="radio" name="star"/>
+                                    <label class="star star-4" for="star-4"></label>
+                                    <input class="star star-3" id="star-3" type="radio" name="star"/>
+                                    <label class="star star-3" for="star-3"></label>
+                                    <input class="star star-2" id="star-2" type="radio" name="star"/>
+                                    <label class="star star-2" for="star-2"></label>
+                                    <input class="star star-1" id="star-1" type="radio" name="star"/>
+                                    <label class="star star-1" for="star-1"></label>
+                                </form>
+                            </div>
                         </div>
-                        <br>
-                        <h5 style="position: static;margin-left: 30px;float: left;" data-bind="text: rate"></h5>    
                     </div>
                 </div>
             </div>
             <br><hr>
             <div class="container-fluid">
                 <p>Namn</p>
-                <input data-bind="value: firstname" id="firstname" type="text"><br><br>
+                <input data-bind="value: firstname" id="firstname" type="text" readonly><br><br>
                 <p>Efternamn</p>
-                <input style=" float: left;" data-bind="value: lastname" id="lastname" type="text"><br><br>
+                <input style=" float: left;" data-bind="value: lastname" id="lastname" type="text" readonly><br><br>
                 <p>E-post</p>
-                <input data-bind="value: email" id="mail" type="email"><br><br>
+                <input data-bind="value: email" id="mail" type="email" readonly><br><br>
                 <p>Telefon</p>
-                <input data-bind="value: phonenumber" id="phone" type="text"><br><br>
+                <input data-bind="value: phonenumber" id="phone" type="text" readonly><br><br>
                 <p>Stad</p>
-                <input data-bind="value: city" id="place" type="text"><br><br>  
+                <input data-bind="value: city" id="place" type="text" readonly><br><br>  
                 <p>Adress</p>
-                <input data-bind="value: address" id="place" type="text"><br><br>  
+                <input data-bind="value: address" id="place" type="text" readonly><br><br>  
                 <p>Postnummer</p>
-                <input data-bind="value: areacode" id="place" type="text"><br><br>  
+                <input data-bind="value: areacode" id="place" type="text" readonly><br><br>  
             </div>
             <hr><br><br><br>
-            <h4 style="text-align: center;">Dina senaste annonser</h4>
+            <h4 style="text-align: center;" data-bind="text: adHeadline"></h4>
             <hr><br>
         </div>
         <div class="container-fluid">
@@ -157,11 +160,55 @@
                 <input class="btn btn-primary pull-right" style="float:right" data-bind="click: saveAdBasic" id="basicButton" value="Spara din annons"/>
 
                 <div id="success" style="visibility: hidden;" class="alert alert-success" role="alert">
-                    <a class="alert-link">Din annons är nu inlagd för granskning.</a>
+                    <a class="alert-link">Din annons är nu uppdaterad.</a>
                 </div>
                 <div id="fail" style="visibility: hidden;" class="alert alert-danger" role="alert">
                     <a id="alert" class="alert-link">Något gick fel. Kolla så du fyllt i alla rutor i testa igen.</a>
                 </div>
+            </div>
+
+            <div data-bind="css: containerStyle" id="border-div">
+                <div data-bind="visible: preview">
+                    <br>
+                    <p><a href="#" class="btn btn-primary" role="button" data-bind="click: goBack">Tillbaka</a>
+                    <section id="ad" data-bind="foreach: {data: adToBeEdit}">
+                        <div data-bind="visible:isMobile " class="col-sm-6 col-md-3">
+                            <img class="thumbnail adImagemobiledisplay" data-bind="attr:{src: imageURL}, css: imgorientation" alt = "">
+                        </div>
+                        <div data-bind="visible:isComputer" class="row">
+                            <img class="thumbnail adImagewebdisplay" data-bind="attr:{src: imageURL}, css: imgorientation">
+                        </div>
+
+                        <div class = "caption">
+                            <p id="location-link-ad" data-bind="text: location"></p>
+                            <h2 style="text-align:left;float:left;" data-bind="text: title"></h2>
+                            <h3 style="text-align:right;float:right;" data-bind="text: price"></h3>
+                            <br style="clear:both;"/>
+                            <p style="float: left;">Hyrs ut utav &nbsp;</p>
+                            <a href="#" id="location-link-ad" style="float: left;" data-bind="text: firstname, click: goBack"></a>
+                            <a data-bind="click:sendMail" id="location-link-ad" style="float: right;">Mejla</a>
+                            <br>
+                            <br><hr>
+                            <div style="background-color:#81F79F !important;" class="jumbotron">
+                                <h5 id="description" data-bind="text: description"></h5>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div id="abc">
+            <div data-bind="css: popUpDiv">
+                <form  action="#" id="formpop" method="post" name="form">
+                    <img data-bind="css: closeButtonDiv" src="../../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide()">
+                    <h2 id="h2pop">Skicka meddelande</h2>
+                    <hr id="hrpop">
+                    <input id="inputpop" name="name" placeholder="Namn" type="text">
+                    <br>
+                    <input id="inputpopmail" name="mail" placeholder="Email" type="text">
+                    <textarea id="textareapop" name="message" placeholder="Meddelande"></textarea>
+                    <a onclick="check_empty()" id="submitpop">Skicka</a>
+                </form>
             </div>
         </div>
     </body>

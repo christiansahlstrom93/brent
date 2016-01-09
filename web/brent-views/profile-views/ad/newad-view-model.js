@@ -26,7 +26,6 @@ function initViewModel() {
         success: function (response) {
             $(function () {
                 function NewAdViewModel() {
-                    console.log(response);
                     var data = response.credentials[0];
                     firstname(data.firstname);
                     lastname(data.lastname);
@@ -96,7 +95,6 @@ function saveAd(imageurl) {
                 phone: phone, place: place, price: price, title: title, pricetype: pricetype, adtext: adtext, imageurl: imageurl
                 , imgorientation: imageorientation},
             success: function (response) {
-                console.log(response);
                 if (response.state) {
                     document.getElementById('success').style.visibility = 'visible';
                     document.getElementById('fail').style.visibility = 'hidden';
@@ -109,7 +107,6 @@ function saveAd(imageurl) {
                 }
             },
             error: function (response) {
-                console.log(response);
             }
         });
     } else {
