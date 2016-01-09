@@ -1,0 +1,139 @@
+@import "http://fonts.googleapis.com/css?family=Raleway";
+/*----------------------------------------------
+CSS settings for HTML div Exact Center
+------------------------------------------------*/
+#abc {
+    width:100%;
+    height:100%;
+    opacity:.95;
+    top:0;
+    left:0;
+    display:none;
+    position:fixed;
+    background-color:#313131;
+    overflow:auto
+}
+.closemobile {
+    position:absolute;
+    right: -40px;
+    top: 0;
+    cursor:pointer
+}
+
+.close {
+    position:absolute;
+    right: 0px;
+    top: 0;
+    cursor:pointer
+}
+.popupContactMobile {
+    position:absolute;
+    width:200px;
+    height:50px;
+    top:20%;
+    left:46%;
+    margin:-25px 0 0 -100px;
+    font-family:'Raleway',sans-serif
+}
+
+.popupContact {
+    position:absolute;
+    width:300px;
+    height:100px;
+    top:20%;
+    left:50%;
+    margin:-50px 0 0 -100px;
+    font-family:'Raleway',sans-serif
+}
+
+#formpop {
+    max-width:300px;
+    min-width:250px;
+    padding:10px 50px;
+    border:2px solid gray;
+    border-radius:10px;
+    font-family:raleway;
+    background-color:#fff
+}
+#p {
+    margin-top:30px
+}
+#h2pop {
+    background-color:#FEFFED;
+    padding:20px 35px;
+    margin:-10px -50px;
+    text-align:center;
+    border-radius:10px 10px 0 0
+}
+#hrpop {
+    margin:10px -50px;
+    border:0;
+    border-top:1px solid #ccc
+}
+#inputpop {
+    width:90%;
+    padding:10px;
+    margin-top:30px;
+    border:1px solid #ccc;
+    padding-left:40px;
+    font-size:16px;
+    font-family:raleway
+}
+
+#inputpopmail {
+    width:90%;
+    padding:10px;
+    margin-top:30px;
+    border:1px solid #ccc;
+    padding-left:40px;
+    font-size:16px;
+    font-family:raleway
+}
+#namepop {
+    background-repeat:no-repeat;
+    background-position:5px 7px
+}
+#emailpop {
+    background-repeat:no-repeat;
+    background-position:5px 7px
+}
+#textareapop {
+    background-repeat:no-repeat;
+    background-position:5px 7px;
+    width:90%;
+    height:95px;
+    resize:none;
+    margin-top:30px;
+    border:1px solid #ccc;
+    padding-left:40px;
+    font-size:16px;
+    font-family:raleway;
+    margin-bottom:30px
+}
+#submitpop {
+    text-decoration:none;
+    width:100%;
+    text-align:center;
+    display:block;
+    background-color:#22CD33;
+    color:#fff;
+    border:1px solid #22CD33;
+    padding:10px 0;
+    font-size:20px;
+    cursor:pointer;
+    border-radius:5px
+}
+#spanpop {
+    color:red;
+    font-weight:700
+}
+#buttonpop {
+    width:10%;
+    height:45px;
+    border-radius:3px;
+    background-color:#E3F6CE;
+    color:#fff;
+    font-family:'Raleway',sans-serif;
+    font-size:18px;
+    cursor:pointer
+}

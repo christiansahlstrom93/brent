@@ -1,6 +1,8 @@
 package business.beans.adhandlers;
 
+import Javahelpers.SearchFilter;
 import business.beans.javahelpers.Server;
+import business.beans.usercredentials.UserInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,19 +42,21 @@ public class AdHandler extends Server {
     }
 
     public JSONArray getAds(String location, String product) {
-
+        SearchFilter searchFilter = new SearchFilter();
         JSONArray ja = new JSONArray();
         JSONObject jo;
+        UserInfo userInfo = new UserInfo();
+        userInfo.setConn(getConn());
 
         try {
-            String args = "SELECT * from ads where city = '" + location + "'";
+            String args = searchFilter.getAdQuery(location, product);
             setStatement(getConn().createStatement());
             setResultSet(getStatement().executeQuery(args));
 
             while (getResultSet().next()) {
                 jo = new JSONObject();
                 String desc = getResultSet().getString("adtext");
-
+                int userID = getResultSet().getInt("ownerid");
                 jo.put("headermessage", "Du letar efter " + product + " i " + location);
                 jo.put("title", getResultSet().getString("title"));
                 jo.put("description", desc);
@@ -64,7 +68,7 @@ public class AdHandler extends Server {
                 jo.put("lastname", getResultSet().getString("lastname"));
                 jo.put("email", getResultSet().getString("ownermail"));
                 jo.put("pricetype", getResultSet().getString("pricetyp"));
-                jo.put("ownerid", getResultSet().getInt("ownerid"));
+                jo.put("ownerid", userID);
 
                 if (desc.length() > 30) {
                     jo.put("preDesc", desc.substring(0, 30) + "...");
@@ -77,6 +81,7 @@ public class AdHandler extends Server {
                     jo.put("displayprice", (int) getResultSet().getDouble("price") + ":-/timme");
                 }
                 jo.put("imgorientation", getResultSet().getString("imgorientation"));
+                jo.put("userInfo", userInfo.getUserCredentials(userID));
                 ja.put(jo);
             }
         } catch (Exception e) {
