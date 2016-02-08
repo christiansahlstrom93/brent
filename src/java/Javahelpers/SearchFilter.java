@@ -12,7 +12,7 @@ package Javahelpers;
 public class SearchFilter {
 
     public static final String EMPTY_FIELD = "nothing";
-
+    //Getting correct query based on user input
     public String getAdQuery(String location, String prod) {
         String args;
 

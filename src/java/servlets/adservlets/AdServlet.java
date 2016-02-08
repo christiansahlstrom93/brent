@@ -48,7 +48,7 @@ public class AdServlet extends HttpServlet {
             System.out.println("************");
 
             JSONObject mainObj = new JSONObject();
-
+            //Sending back the json array gathered from the business logic
             mainObj.put("ads", adBean.getAdListData(location, search));
             out.print(mainObj);
 

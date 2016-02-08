@@ -1,4 +1,9 @@
 function initViewModel() {
+
+    if (!sessionStorage.getItem("online")) {
+        window.open("../../adviews/adview-template.html", "_self");
+    }
+
     var name = localStorage.getItem("email");
     var self = this;
     self.firstname = ko.observable();
@@ -7,15 +12,26 @@ function initViewModel() {
     self.phone = ko.observable();
     self.place = ko.observable();
     self.admessage = ko.observable();
+    self.hasNotes = ko.observable(false);
+    self.notifications = ko.observableArray();
+    self.notesDisplay = ko.observable(false);
+    self.isMobile = ko.observable(mobilecheck());
+    self.isComputer = ko.observable(!mobilecheck());
 
     if (mobilecheck()) {
+        self.loginClass = ko.observable("rightPhoneMyPages");
         self.navBarImage = ko.observable("navbar-brand-image");
         self.imageStyle = ko.observable("thumbnail newadImagemobile north");
         self.containerStyle = ko.observable("container newadframemobile");
+        self.notificationClass = ko.observable("notesPhoneMPage");
+        self.rowHeight = ko.observable("row rowStylemobile");
     } else {
+        self.loginClass = ko.observable("rightWeb");
         self.navBarImage = ko.observable("navbar-brand-image pull-left");
         self.imageStyle = ko.observable("thumbnail newadImageweb north");
         self.containerStyle = ko.observable("container newadframeweb");
+        self.notificationClass = ko.observable("notesWebMPage");
+        self.rowHeight = ko.observable("row rowStyleweb");
     }
 
     $.ajax({
@@ -24,6 +40,7 @@ function initViewModel() {
         dataType: 'JSON',
         data: {username: name},
         success: function (response) {
+            checkNotifications(self);
             $(function () {
                 function NewAdViewModel() {
                     var data = response.credentials[0];
@@ -33,6 +50,7 @@ function initViewModel() {
                     phone(data.phone);
                     place(data.city);
                     admessage("Skapa en annons");
+                    
                     self.turnImage = function () {
                         var className;
                         if (mobilecheck()) {
@@ -52,17 +70,43 @@ function initViewModel() {
                             self.imageStyle("thumbnail " + className + " east");
                         }
                     };
+
+                    self.myPages = function () {
+                        window.open("../user-view/user-view-template.html", "_self");
+                    };
+
+                    self.gotoProfile = function (data) {
+                        sessionStorage.setItem("username", data.userInfo[0].firstname);
+                        sessionStorage.setItem("email", data.userInfo[0].mail);
+                        window.open("../user-view/user-view-template.html", "_self");
+                    };
+
+                    self.search = function () {
+                        window.open("../../adviews/adview-template.html", "_self");
+                    };
+
+                    self.logout = function () {
+                        setCookie("username", "", 365);
+                        window.open("../../adviews/adview-template.html", "_self");
+                    };
+
+                    self.checkNotifications = function () {
+                        self.notesDisplay(true);
+                        document.getElementById('noteDiv').style.display = "block";
+                    };
+                    
                 }
                 ko.applyBindings(NewAdViewModel());
             });
         }
     });
 }
-
+//check if element has css class
 function hasClass(element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
 
+//senidng image to servlet and get the URL back as response
 $(function () {
     $('#upload-form').ajaxForm({
         success: function (msg) {
@@ -73,6 +117,7 @@ $(function () {
     });
 });
 
+//saving ad
 function saveAd(imageurl) {
 
     var firstname = $("#firstname").val();
@@ -140,6 +185,8 @@ $(document).ready(function () {
         }
     });
 });
+
+//Handeling the thumbnail
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -150,6 +197,7 @@ function readURL(input) {
     }
 }
 
+//handling the checkboxe for hour or day price
 function handleCheckBox(id) {
     if (id === 'day') {
         $("#daybox").prop("checked", true);
@@ -168,6 +216,7 @@ function getCheckBoxType() {
     }
 }
 
+//getting orientation of the image
 function getOrientation() {
 
     var element = document.getElementById('blah');
@@ -181,5 +230,33 @@ function getOrientation() {
     } else {
         return "south";
     }
+}
 
+function checkNotifications(self) {
+    var mail = localStorage.getItem("email");
+    $.ajax({
+        url: "../../../NotificationServlet",
+        type: 'POST',
+        dataType: 'JSON',
+        data: {mail: mail, get: 'true'},
+        success: function (response) {
+
+            self.notifications(response.notifications);
+            var counter = 0;
+            var not = response.notifications;
+            for (var i = 0; i < response.notifications.length; i++) {
+                if (!not[i].opened) {
+                    counter++;
+                }
+            }
+            if (counter > 0) {
+                self.hasNotes(true);
+            }
+            document.getElementById('notificationText').innerHTML = counter;
+        }
+    });
+}
+
+function div_hide(id) {
+    document.getElementById(id).style.display = "none";
 }

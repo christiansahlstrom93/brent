@@ -77,17 +77,17 @@ public class EditAdServlet extends HttpServlet {
             imgorientation = parser.getString();
             parser.setKey("adid");
             adid = Integer.parseInt(parser.getString());
-
+            
             imageurl = imageurl.replace("\\", "\\\\\\");
             boolean state = adBean.updateAd(email, imageurl, pricetype, email, price, title, adText, firstname, lastname, phone, city, imgorientation, adid);
-
+            
             PrintWriter out = response.getWriter();
             JSONObject json = new JSONObject();
             json.put("state", state);
             out.print(json);
 
         } catch (JSONException ex) {
-            System.out.println("Mauritz " + ex);
+            System.out.println("eerror " + ex);
         }
     }
 

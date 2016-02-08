@@ -19,6 +19,7 @@ import org.json.JSONArray;
 @Stateless
 public class UserBean implements UserBeanLocal {
 
+    //adding user to DB
     @Override
     public String createUser(String lastname, String firstname, String email, String password, String phonenumber, String address, String city, String areacode, String imgURL, String orientation) {
         String result = "";
@@ -33,6 +34,7 @@ public class UserBean implements UserBeanLocal {
         return result;
     }
 
+    //Getting information for profile
     @Override
     public JSONArray getMyPagesInfo(String email) {
 
@@ -49,6 +51,7 @@ public class UserBean implements UserBeanLocal {
         return null;
     }
 
+    //Getting user data
     @Override
     public JSONArray getUserCredentials(String usrName) {
         try {

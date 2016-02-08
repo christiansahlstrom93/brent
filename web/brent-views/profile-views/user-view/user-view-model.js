@@ -1,11 +1,17 @@
+//Init the page and check if it is a visitor or MYpage
 function init() {
+
+    if (!sessionStorage.getItem("online")) {
+        window.open("../../adviews/adview-template.html", "_self");
+    }
+
     var self = this;
     var email = sessionStorage.getItem("email");
     var username = sessionStorage.getItem("username");
     var thumb;
 
     self.myName = ko.observable(localStorage.getItem("username"));
-    self.isVisiting = ko.observable(localStorage.getItem("username") != username);
+    self.isVisiting = ko.observable(localStorage.getItem("username") !== username);
     self.username = ko.observable(username);
     self.firstname = ko.observable();
     self.lastname = ko.observable();
@@ -27,6 +33,9 @@ function init() {
     self.imageOrient = ko.observable();
     self.adImageUrl = ko.observable();
     self.thumbnail = ko.observable();
+    self.hasNotes = ko.observable(false);
+    self.notifications = ko.observableArray();
+    self.notesDisplay = ko.observable(false);
 
     if (mobilecheck()) {
         self.thumbNails = ko.observable("thumbnail webThumbMyPages");
@@ -35,7 +44,12 @@ function init() {
         self.containerStyle = ko.observable("container newadframemobile");
         self.popUpDiv = ko.observable("popupContactMobile");
         self.closeButtonDiv = ko.observable("closemobile");
+        self.notificationClass = ko.observable("notesPhoneMPage");
+        self.rowHeight = ko.observable("row rowStylemobile");
+        self.interestButton = ko.observable("btn btn-info interestButtonPhoneMPage");
     } else {
+        self.interestButton = ko.observable("btn btn-info interestButtonMPage");
+        self.rowHeight = ko.observable("row rowStyleweb");
         self.loginClass = ko.observable("rightWeb");
         self.thumbnail = ko.observable("thumbnail adImagemobiledisplay pull-left");
         thumb = "thumbnail adImagemobiledisplay pull-left";
@@ -44,6 +58,7 @@ function init() {
         self.containerStyle = ko.observable("container newadframeweb");
         self.popUpDiv = ko.observable("popupContact");
         self.closeButtonDiv = ko.observable("close");
+        self.notificationClass = ko.observable("notesWebMPage");
     }
 
     if (localStorage.getItem("username") != username) {
@@ -60,6 +75,7 @@ function init() {
         dataType: 'JSON',
         data: {email: email},
         success: function (response) {
+            checkNotifications(self);
             $(function () {
                 function UserViewModel() {
                     self.ads(response.ads);
@@ -81,7 +97,7 @@ function init() {
                     self.logout = function () {
                         setCookie("username", "", 365);
                         self.username("");
-                        history.back();
+                        window.open("../../adviews/adview-template.html", "_self");
                     };
                     self.createAd = function () {
                         window.open("../ad/newad.html", "_self");
@@ -93,6 +109,11 @@ function init() {
                         self.editAd(true);
                         self.preview(false);
                         self.startEdit(false);
+                    };
+                    self.gotoProfile = function (data) {
+                        sessionStorage.setItem("username", data.userInfo[0].firstname);
+                        sessionStorage.setItem("email", data.userInfo[0].mail);
+                        window.open("user-view-template.html", "_self");
                     };
                     self.editAds = function (data) {
                         if (localStorage.getItem("username") === username) {
@@ -118,6 +139,7 @@ function init() {
                             self.adToBeEdit(data);
                         }
                     };
+                    //save ad without new image
                     self.saveAdBasic = function () {
                         var firstname = $("#firstname").val();
                         var lastname = $("#lastname").val();
@@ -189,8 +211,20 @@ function init() {
                         document.getElementById('abc').style.display = "block";
                         document.getElementById('inputpopmail').value = localStorage.getItem("email");
                     };
-                }
 
+                    self.checkNotifications = function () {
+                        self.notesDisplay(true);
+                        document.getElementById('noteDiv').style.display = "block";
+                    };
+
+                    self.sendInterest = function (data) {
+                        if (sendNotification(localStorage.getItem("username"), data.email, localStorage.getItem("email"), data.adid) === 'true') {
+                            document.getElementById('failText').innerHTML = "Ditt intresse är skickat till " + data.firstname;
+                        } else {
+                            document.getElementById('failText').innerHTML = 'Du har redan skickat intresse till ' + data.firstname;
+                        }
+                    };
+                }
                 ko.applyBindings(UserViewModel());
             });
         }
@@ -223,6 +257,7 @@ function handleCheckBox(id) {
         $("#hourbox").prop("checked", true);
     }
 }
+//for the automatically updated thumbnail when fetching from computer/mpobile disk
 $(document).on('change', '.btn-file :file', function () {
     var input = $(this),
             numFiles = input.get(0).files ? input.get(0).files.length : 1,
@@ -241,6 +276,7 @@ $(document).on('change', '.btn-file :file', function () {
         document.getElementById('blah').style.visibility = "hidden";
     }
 });
+//check if there is a image uploaded
 $(document).ready(function () {
     $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
         var input = $(this).parents('.input-group').find(':text'), log = numFiles > 1 ? numFiles + ' files selected' : label;
@@ -336,8 +372,8 @@ function saveAd(imageurl) {
     }
 }
 
-function div_hide() {
-    document.getElementById('abc').style.display = "none";
+function div_hide(id) {
+    document.getElementById(id).style.display = "none";
 }
 
 function check_empty() {
@@ -358,4 +394,40 @@ function check_empty() {
             }
         });
     }
+}
+
+function checkNotifications(self) {
+    var mail = localStorage.getItem("email");
+    $.ajax({
+        url: "../../../NotificationServlet",
+        type: 'POST',
+        dataType: 'JSON',
+        data: {mail: mail, get: 'true'},
+        success: function (response) {
+
+            self.notifications(response.notifications);
+            var counter = 0;
+            var not = response.notifications;
+            for (var i = 0; i < response.notifications.length; i++) {
+                if (!not[i].opened) {
+                    counter++;
+                }
+            }
+            if (counter > 0) {
+                self.hasNotes(true);
+            }
+            document.getElementById('notificationText').innerHTML = counter;
+        }
+    });
+}
+
+function sendNotification(sender, recipient, mail, id) {
+    $.ajax({
+        url: "../../../NotificationServlet",
+        type: 'POST',
+        data: {sender: sender, recepeint: recipient, email: mail, id: id, get: false},
+        success: function (response) {
+            return response;
+        }
+    });
 }

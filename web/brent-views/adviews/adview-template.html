@@ -26,42 +26,52 @@
 
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input id="product" type="text" class="form-control" placeholder="Exempel: borrmaskin">
-                        <!-- ko if: isComputer -->
-                        <br>
-                        <!-- /ko -->
-                        <br>
-                        <input id="location" type="text" class="form-control" placeholder="Exempel: Malmö">
+                        <input id="product" type="text" class="form-control" placeholder="Vad letar du efter?">
                         <!-- ko if: isMobile -->
                         <br>
                         <!-- /ko -->
-                        <button class="btn btn-default" data-bind="click: searchAds">Sök</button>
+                        <input id="location" type="text" class="form-control" placeholder="Vart någonstans?">
+                        <!-- ko if: isMobile -->
+                        <br>
+                        <!-- /ko -->
+                        <button class="btn btn-default pull-right" data-bind="click: searchAds">Sök</button>
+                        <br><br>
                     </div>
                 </form>
             </div>
 
             <!-- ko ifnot: isLoggedIn -->
-
             <div data-bind="css: loginClass" class="dropdown">
 
-                <a id="create-user" data-bind="click:createUser " role="button" aria-haspopup="true">
-                    Skapa användare &nbsp
-                </a>
-
-                <a id="label" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true">
+                <!-- ko if: isMobile -->
+                <a id="label" class="btn btn-primary" style="margin-top: -10%;" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true">
                     Logga in  
                 </a>
-
+                <!-- /ko -->
+                <!-- ko ifnot: isMobile -->
+                <a id="label" class="btn btn-primary" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true">
+                    Logga in  
+                </a>
+                <!-- /ko -->
                 <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
                     <li>
                         <input id="username" type="email" class="form-control" placeholder="Email">
                         <input style="margin-top: 4px;" id="password" type="password" class="form-control" placeholder="Lösenord">
                         <br>
                     </li>
-                    <button data-bind="click: login" type="login" class="btn btn-success pull-right" data-bind="click: login">Logga in</button>
+                    <button data-bind="click: login" type="login" class="btn btn-success pull-left" data-bind="click: login">Logga in</button>
+                    <br><br>
+                    <a id="create-user" data-bind="click:createUser " role="button" aria-haspopup="true">
+                        Ny användare
+                    </a>
                 </ul>
             </div>
             <!-- /ko -->
+
+            <div data-bind="visible: isLoggedIn, css: notificationClass">
+                <img class="notimg" src="../../img/note.png" alt="logo" data-bind="click: checkNotifications">
+                <span data-bind="visible: hasNotes" id="notificationText" class="imgHolderSpan"></span>
+            </div>
 
             <!-- ko if: isLoggedIn -->
             <div data-bind="css: loginClass" class="dropdown">
@@ -77,6 +87,7 @@
             </div>
             <!-- /ko -->
         </nav>
+
 
         <div data-bind="css: containerStyle" id="border-div">
             <div class="container-fluid">
@@ -126,10 +137,11 @@
                                     <p style="float: left;">Hyrs ut utav &nbsp;</p>
                                     <a href="#" id="location-link-ad" style="float: left;" data-bind="text: firstname, click: gotoProfile"></a>
                                     <a href="#" id="location-link-ad" data-bind="click:sendMail" style="float: right;">Mejla</a>
-                                    <br>
-                                    <br><hr>
+                                    <div class='toast' style='display:none'></div>
+                                    <p><a href="#" role="button" data-bind="css: interestButton, click: sendInterest">SKICKA DITT INTRESSE</a>
+                                    <br><br><hr>
                                     <div style="background-color:#81F79F !important;" class="jumbotron">
-                                        <h5 id="description" data-bind="text: description"></h5>
+                                        <h5 style="padding: 10px;" id="description" data-bind="text: description"></h5>
                                     </div>
                                 </div>
                             </section>
@@ -160,7 +172,7 @@
         <div id="abc">
             <div data-bind="css: popUpDiv">
                 <form  action="#" id="formpop" method="post" name="form">
-                    <img data-bind="css: closeButtonDiv" src="../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide()">
+                    <img data-bind="css: closeButtonDiv" src="../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide('abc')">
                     <h2 id="h2pop">Skicka meddelande</h2>
                     <hr id="hrpop">
                     <input id="inputpop" name="name" placeholder="Namn" type="text">
@@ -169,6 +181,42 @@
                     <textarea id="textareapop" name="message" placeholder="Meddelande"></textarea>
                     <a onclick="check_empty()" id="submitpop">Skicka</a>
                 </form>
+            </div>
+        </div>
+
+        <div data-bind="visible: notesDisplay" style="background: #ffffff" id="noteDiv" class="abc">
+            <div class="formPop">
+                <img style="padding:5px;" alt="" class="close" src="../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide('noteDiv')">
+                <h3 style="text-align: center;">Händelser</h3>
+                <hr>
+                <section class="formPop" id="ad" data-bind="foreach: {data: notifications}">
+                    <div data-bind="css: rowHeight">
+                        <div class = "col-sm-6 col-md-3">
+                            <a style="float: left; " href = "#" >
+                                <!-- ko if: isMobile -->
+                                <img class="thumbnail adImagemobile pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
+                                <!-- /ko -->
+                                <!-- ko if: isComputer -->
+                                <img class="thumbnail adImageweb pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
+                                <!-- /ko -->
+                            </a>
+                            <h5 style="margin-left: 5px;" data-bind="text: headline"></h5>
+                            <!-- ko if: isMobile -->
+                            <img class="thumbnail adImagemobile pull-left" style=" margin-left: 5px;width: 50px; height: 50px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
+                            <!-- /ko -->
+                            <!-- ko if: isComputer -->
+                            <img class="thumbnail adImagemobile pull-left" style="width: 70px; height: 70px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
+                            <!-- /ko -->
+                            <a data-bind="text: adinfo[0].title" style="margin-left: 5px;"></a>
+                            <h6 data-bind="text: adinfo[0].preDesc" style="margin-left: 5px;"></h6>
+                            <br>
+                            <button style="float: left; margin-left: 5px;" class="btn btn-danger pull-left">Neka</button>
+                            <button style="float: right; margin-right: 5px;" class="btn btn-success pull-right">Godkänn</button>
+                            <br><br><br>                               
+                        </div>
+                    </div>
+                    <br><hr>
+                </section>
             </div>
         </div>
     </body>

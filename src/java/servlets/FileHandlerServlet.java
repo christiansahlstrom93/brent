@@ -22,7 +22,7 @@ import servlets.filehandlers.PictureCompressor;
  * @author Christian
  */
 @WebServlet("/upload")
-@MultipartConfig
+@MultipartConfig //Notation for getting access to classes like "Part"
 public class FileHandlerServlet extends HttpServlet {
 
     public static String CHRILLEPATH = "/glassfish4/glassfish/domains/domain1/applications/Brent_Images/images/";
@@ -47,7 +47,7 @@ public class FileHandlerServlet extends HttpServlet {
         Part filePart = request.getPart("file");
 
         InputStream is = filePart.getInputStream();
-
+        //saving original file that will be resized in the next lines
         try {
             FileOutputStream fos = new FileOutputStream(CHRILLEPATH + "mfile.jpg");
             try (BufferedOutputStream bos = new BufferedOutputStream(fos)) {
@@ -62,14 +62,15 @@ public class FileHandlerServlet extends HttpServlet {
         } catch (Exception ex) {
             System.out.println("Error " + ex);
         }
-        //TODO ändra path
+        //Getting image back 
         BufferedImage image = ImageIO.read(new File(CHRILLEPATH + "mfile.jpg"));
 
         try {
             PrintWriter out = response.getWriter();
+            //resizing the image and returning the path to the client
             out.print(PictureCompressor.resize(image,CHRILLEPATH,":8080/Brent_Images/images/"));
         } catch (Exception ex) {
-            System.out.println("kug" +ex);
+            System.out.println("error" +ex);
         }
     }
 

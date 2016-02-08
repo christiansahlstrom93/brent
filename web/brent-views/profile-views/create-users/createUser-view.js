@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-
+//getting dynamic update on an div based on input
 $(function () {
     $("#pass2").keyup(function () {
         var password = $("#pass1").val();
@@ -99,6 +99,8 @@ function createUser(imageurl) {
 
     }
 }
+
+//open source algorithm for checking personalnumber
 function checkPersonalNumber(sPNum)
 {
     var numbers = sPNum.match(/^(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)$/);

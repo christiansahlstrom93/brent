@@ -37,6 +37,11 @@
                     <li><a data-bind="click:logout " href="#">Logga ut</a></li>
                 </ul>
             </div>
+
+            <div data-bind="css: notificationClass">
+                <img class="notimg" src="../../../img/note.png" alt="logo" data-bind="click: checkNotifications">
+                <span data-bind="visible: hasNotes" id="notificationText" class="imgHolderSpan"></span>
+            </div>
         </nav>
         <div id="border-div">
             <div class="container-fluid">
@@ -188,9 +193,11 @@
                             <a href="#" id="location-link-ad" style="float: left;" data-bind="text: firstname, click: goBack"></a>
                             <a data-bind="click:sendMail" id="location-link-ad" style="float: right;">Mejla</a>
                             <br>
+                            <p><a href="#" role="button" data-bind="css: interestButton, click: sendInterest">SKICKA DITT INTRESSE</a>
+                            <p id="failText" style="text-align: center; color: #FF0000;"></p>
                             <br><hr>
                             <div style="background-color:#81F79F !important;" class="jumbotron">
-                                <h5 id="description" data-bind="text: description"></h5>
+                                <h5 id="description" style="padding: 10px;" data-bind="text: description"></h5>
                             </div>
                         </div>
                     </section>
@@ -200,7 +207,7 @@
         <div id="abc">
             <div data-bind="css: popUpDiv">
                 <form  action="#" id="formpop" method="post" name="form">
-                    <img data-bind="css: closeButtonDiv" src="../../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide()">
+                    <img data-bind="css: closeButtonDiv" src="../../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide('abc')">
                     <h2 id="h2pop">Skicka meddelande</h2>
                     <hr id="hrpop">
                     <input id="inputpop" name="name" placeholder="Namn" type="text">
@@ -209,6 +216,42 @@
                     <textarea id="textareapop" name="message" placeholder="Meddelande"></textarea>
                     <a onclick="check_empty()" id="submitpop">Skicka</a>
                 </form>
+            </div>
+        </div>
+
+        <div data-bind="visible: notesDisplay" style="background: #ffffff" id="noteDiv" class="abc">
+            <div class="formPop">
+                <img style="padding:5px;" alt="" class="close" src="../../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide('noteDiv')">
+                <h3 style="text-align: center;">Händelser</h3>
+                <hr>
+                <section class="formPop" id="ad" data-bind="foreach: {data: notifications}">
+                    <div data-bind="css: rowHeight">
+                        <div class = "col-sm-6 col-md-3">
+                            <a style="float: left; " href = "#" >
+                                <!-- ko if: isMobile -->
+                                <img class="thumbnail adImagemobile pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
+                                <!-- /ko -->
+                                <!-- ko if: isComputer -->
+                                <img class="thumbnail adImageweb pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
+                                <!-- /ko -->
+                            </a>
+                            <h5 style="margin-left: 5px;" data-bind="text: headline"></h5>
+                            <!-- ko if: isMobile -->
+                            <img class="thumbnail adImagemobile pull-left" style=" margin-left: 5px;width: 50px; height: 50px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
+                            <!-- /ko -->
+                            <!-- ko if: isComputer -->
+                            <img class="thumbnail adImagemobile pull-left" style="width: 70px; height: 70px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
+                            <!-- /ko -->
+                            <a data-bind="text: adinfo[0].title" style="margin-left: 5px;"></a>
+                            <h6 data-bind="text: adinfo[0].preDesc" style="margin-left: 5px;"></h6>
+                            <br>
+                            <button style="float: left; margin-left: 5px;" class="btn btn-danger pull-left">Neka</button>
+                            <button style="float: right; margin-right: 5px;" class="btn btn-success pull-right">Godkänn</button>
+                            <br><br><br>                               
+                        </div>
+                    </div>
+                    <br><hr>
+                </section>
             </div>
         </div>
     </body>

@@ -10,15 +10,12 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.Address;
-import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import servlets.adservlets.MailServlet;
-import static sun.security.jgss.GSSUtil.login;
 
 /**
  *
@@ -36,6 +33,7 @@ public class MailHandler {
         this.content = content;
     }
 
+    //Sending email
     public String sendMail() throws UnsupportedEncodingException {
 
         try {

@@ -13,6 +13,7 @@
         <script src="../../adviews/adview-model.js"></script>
         <script src="newad-view-model.js"></script>
         <link rel="stylesheet" href="../../adviews/adstyles.css">
+        <link rel="stylesheet" href="../../main/popups.css">
     </head>
     <body id="body">
         <script>
@@ -22,6 +23,25 @@
             <div class="container-fluid">
                 <img class="navbar-brand-image" src="../../../img/logo.png" alt="logo">    
             </div>
+
+
+            <div data-bind="css: loginClass" class="dropdown">
+                <a data-bind="text: firstname" id="dLabel" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true"></a>
+                <span class="caret"></span>
+                <ul class="dropdown-menu" style="padding: 5px; width: 200px; right: 0; left: auto;" aria-labelledby="dLabel">
+                    <li><a data-bind="click: search" href="#">Sök</a></li>
+                    <li><a data-bind="click: myPages" href="#">Mina sidor</a></li>
+                    <li><a href="#">Kontoinställningar</a></li>
+                    <li><a href="#">Mina kontakter</a></li>
+                    <li><a data-bind="click:logout " href="#">Logga ut</a></li>
+                </ul>
+            </div>
+
+            <div data-bind="css: notificationClass">
+                <img class="notimg" src="../../../img/note.png" alt="logo" data-bind="click: checkNotifications">
+                <span data-bind="visible: hasNotes" id="notificationText" class="imgHolderSpan"></span>
+            </div>
+
         </nav>
         <div data-bind="css: containerStyle" id="border-div">
             <div  class="container-fluid">
@@ -74,6 +94,42 @@
             </div>
             <div id="fail" style="visibility: hidden;" class="alert alert-danger" role="alert">
                 <a id="alert" class="alert-link">Något gick fel. Kolla så du fyllt i alla rutor i testa igen.</a>
+            </div>
+        </div>
+
+        <div data-bind="visible: notesDisplay" style="background: #ffffff" id="noteDiv" class="abc">
+            <div class="formPop">
+                <img style="padding:5px;" alt="" class="close" src="../../../img/ic_clear_black_24dp_2x.png" onclick ="div_hide('noteDiv')">
+                <h3 style="text-align: center;">Händelser</h3>
+                <hr>
+                <section class="formPop" id="ad" data-bind="foreach: {data: notifications}">
+                    <div data-bind="css: rowHeight">
+                        <div class = "col-sm-6 col-md-3">
+                            <a style="float: left; " href = "#" >
+                                <!-- ko if: isMobile -->
+                                <img class="thumbnail adImagemobile pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
+                                <!-- /ko -->
+                                <!-- ko if: isComputer -->
+                                <img class="thumbnail adImageweb pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
+                                <!-- /ko -->
+                            </a>
+                            <h5 style="margin-left: 5px;" data-bind="text: headline"></h5>
+                            <!-- ko if: isMobile -->
+                            <img class="thumbnail adImagemobile pull-left" style=" margin-left: 5px;width: 50px; height: 50px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
+                            <!-- /ko -->
+                            <!-- ko if: isComputer -->
+                            <img class="thumbnail adImagemobile pull-left" style="width: 70px; height: 70px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
+                            <!-- /ko -->
+                            <a data-bind="text: adinfo[0].title" style="margin-left: 5px;"></a>
+                            <h6 data-bind="text: adinfo[0].preDesc" style="margin-left: 5px;"></h6>
+                            <br>
+                            <button style="float: left; margin-left: 5px;" class="btn btn-danger pull-left">Neka</button>
+                            <button style="float: right; margin-right: 5px;" class="btn btn-success pull-right">Godkänn</button>
+                            <br><br><br>                               
+                        </div>
+                    </div>
+                    <br><hr>
+                </section>
             </div>
         </div>
     </body>

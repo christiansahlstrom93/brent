@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
  */
 public class PictureCompressor {
 
+    //resizing and handling the quality of the images so it doesn't take to much space
     public static String resize(BufferedImage image,String fPath, String returnPath) throws IOException {
         Random random = new Random();
        
@@ -29,6 +30,7 @@ public class PictureCompressor {
         
         BufferedImage temp = null;
 
+        //checing org size 
         if (image.getWidth() > image.getHeight()) {
             temp = resizeImage(image, 711, 400);
         } else {
@@ -38,9 +40,10 @@ public class PictureCompressor {
 
         ImageIO.write(temp, "jpg", file);
         String localIP = InetAddress.getLocalHost().getHostAddress();
-        return "http://"+localIP+returnPath+ path;
+        return "http://"+localIP+returnPath+ path; //path returned to client
     }
 
+    //Code for handeling the resizing
     public static BufferedImage resizeImage(final Image image, int width, int height) {
         final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         final Graphics2D graphics2D = bufferedImage.createGraphics();

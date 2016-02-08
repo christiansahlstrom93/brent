@@ -1,11 +1,17 @@
+//Initializing the main page, send ajax to server
 function adrequest() {
+    sessionStorage.setItem("online", true);
     var self = this;
-
     var location = localStorage.getItem("myCity", "nothing");
     var search = "nothing";
     getLocation(location);
     if (!location) {
         location = "nothing";
+    }
+
+    if (checkSession()) {
+        search = sessionStorage.getItem("productsearch");
+        location = sessionStorage.getItem("citysearch");
     }
 
     self.ads = ko.observableArray([]);
@@ -20,8 +26,13 @@ function adrequest() {
     self.loginClass = ko.observable(className());
     self.username = ko.observable(getCookie("username"));
     self.rateText = ko.observable();
+    self.notifications = ko.observableArray();
+    self.notesDisplay = ko.observable(false);
+    self.hasNotes = ko.observable(false);
 
+    //check if mobile or computer
     if (mobilecheck()) {
+        self.interestButton = ko.observable("btn btn-info interestButtonPhone");
         self.navBarImage = ko.observable("navbar-brand-image");
         self.newUserButton = ko.observable("btn btn-primary newUserButtonMobile");
         self.containerStyle = ko.observable("container newadframemobile");
@@ -30,7 +41,9 @@ function adrequest() {
         self.mobileAdText = ko.observable("mobileTitle");
         self.popUpDiv = ko.observable("popupContactMobile");
         self.closeButtonDiv = ko.observable("closemobile");
+        self.notificationClass = ko.observable("notesPhone");
     } else {
+        self.interestButton = ko.observable("btn btn-info interestButton");
         self.navBarImage = ko.observable("navbar-brand-image pull-left");
         self.newUserButton = ko.observable("btn btn-primary newUserButtonWeb");
         self.rowHeight = ko.observable("row rowStyleweb");
@@ -39,14 +52,17 @@ function adrequest() {
         self.mobileAdText = ko.observable("");
         self.popUpDiv = ko.observable("popupContact");
         self.closeButtonDiv = ko.observable("close");
+        self.notificationClass = ko.observable("notesWeb");
     }
 
+//send ajax for getting ads
     $.ajax({
         url: "../../AdServlet",
         type: 'POST',
         dataType: 'JSON',
         data: {location: location, search: search},
         success: function (response) {
+            checkNotifications(self);
             $(function () {
                 function AdViewModel() {
                     if (response.ads[0]) {
@@ -56,6 +72,7 @@ function adrequest() {
 
                     self.gotoAd = function (data) {
                         try {
+                            window.scrollTo(0, 0);
                             self.rateText(data.userInfo[0].rateText);
                             handleRates(data.userInfo[0].rate);
                             self.showList(false);
@@ -75,7 +92,8 @@ function adrequest() {
                         if (!product) {
                             product = "nothing";
                         }
-
+                        sessionStorage.setItem("citysearch", location);
+                        sessionStorage.setItem("productsearch", product);
                         makeRequest(self, location, product);
                     };
 
@@ -130,6 +148,27 @@ function adrequest() {
                         window.open("../profile-views/user-view/user-view-template.html", "_self");
                     };
 
+                    self.sendInterest = function (data) {
+                        if (checkCookie()) {
+                            $('.toast').fadeIn(400).delay(3000).fadeOut(400);
+
+                            if (getCookie("email") === data.email) {
+                                $('.toast').text('Du kan inte skicka till dig själv..');
+                            } else {
+                                if (sendNotification(getCookie("username"), data.email, getCookie("email"), data.adid) === 'true') {
+                                    $('.toast').text('Ditt intresse är skickat till ' + data.firstname);
+                                } else {
+                                    $('.toast').text('Du har redan skickat intresse till ' + data.firstname);
+                                }
+                            }
+
+                        } else {
+                            $('.toast').fadeIn(400).delay(3000).fadeOut(400);
+                            $('.toast').text('Du måste vara inloggad för att skicka intresse..');
+                        }
+                    };
+
+                    //visit profile
                     self.gotoProfile = function (data) {
                         sessionStorage.setItem("username", data.userInfo[0].firstname);
                         sessionStorage.setItem("email", data.userInfo[0].mail);
@@ -141,6 +180,11 @@ function adrequest() {
                         document.getElementById('abc').style.display = "block";
                         document.getElementById('inputpopmail').value = getCookie("email");
                     };
+
+                    self.checkNotifications = function () {
+                        self.notesDisplay(true);
+                        document.getElementById('noteDiv').style.display = "block";
+                    };
                 }
                 ko.applyBindings(AdViewModel());
             });
@@ -149,6 +193,7 @@ function adrequest() {
 }
 
 function makeRequest(self, location, product) {
+    //Sending ajax reuquest for getting data from ads
     $.ajax({
         url: "../../AdServlet",
         type: 'POST',
@@ -171,6 +216,7 @@ window.mobilecheck = function () {
     return check;
 };
 
+//getting location based on ip
 function getLocation(location) {
     $.get("http://ipinfo.io", function (response) {
         if (response.city && response.city !== "") {
@@ -179,6 +225,7 @@ function getLocation(location) {
     }, "jsonp");
 }
 
+//get value of cookie
 function checkCookie() {
     var state = false;
     var user = getCookie("username");
@@ -188,6 +235,7 @@ function checkCookie() {
     return state;
 }
 
+//Determine css for web and phone
 function className() {
     var str;
 
@@ -219,6 +267,7 @@ function getCookie(cname) {
     return "";
 }
 
+//handeling the stars in ads
 function handleRates(rates) {
 
     if (rates <= 0.0) {
@@ -241,10 +290,12 @@ function handleRates(rates) {
     }
 }
 
-function div_hide() {
-    document.getElementById('abc').style.display = "none";
+//closing mail pop up
+function div_hide(id) {
+    document.getElementById(id).style.display = "none";
 }
 
+//check if fields are filled in for the mail popup
 function check_empty() {
     if (document.getElementById('inputpop').value == "" || document.getElementById('inputpopmail').value == "" || document.getElementById('textareapop').value == "") {
         alert("Fyll i alla fälten");
@@ -254,7 +305,7 @@ function check_empty() {
         var name = document.getElementById('inputpop').value;
         var msg = document.getElementById('textareapop').value;
 
-
+        //sending ajax to mailservlet
 
         $.ajax({
             url: "../../MailServlet",
@@ -265,4 +316,43 @@ function check_empty() {
             }
         });
     }
+}
+
+function checkSession() {
+    return (sessionStorage.getItem("productsearch") !== null || sessionStorage.getItem("citysearch") !== null);
+}
+
+function sendNotification(sender, recipient, mail, id) {
+    $.ajax({
+        url: "../../NotificationServlet",
+        type: 'POST',
+        data: {sender: sender, recepeint: recipient, email: mail, id: id, get: false},
+        success: function (response) {
+            return response;
+        }
+    });
+}
+
+function checkNotifications(self) {
+    var mail = getCookie("email");
+    $.ajax({
+        url: "../../NotificationServlet",
+        type: 'POST',
+        dataType: 'JSON',
+        data: {mail: mail, get: 'true'},
+        success: function (response) {
+            self.notifications(response.notifications);
+            var counter = 0;
+            var not = response.notifications;
+            for (var i = 0; i < response.notifications.length; i++) {
+                if (!not[i].opened) {
+                    counter++;
+                }
+            }
+            if (counter > 0) {
+                self.hasNotes(true);
+            }
+            document.getElementById('notificationText').innerHTML = counter;
+        }
+    });
 }

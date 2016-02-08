@@ -21,7 +21,7 @@ public class SmtpAuthenticator extends Authenticator {
         this.username = user;
         this.password = pass;
     }
-
+    //Check authentication for password on email
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
 

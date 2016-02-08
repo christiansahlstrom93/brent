@@ -29,9 +29,9 @@ import servlets.filehandlers.PictureCompressor;
 @WebServlet("/profile")
 @MultipartConfig
 public class ProfileImageServlet extends HttpServlet {
+    public static String CHRILLEPATH = "/glassfish4/glassfish/domains/domain1/applications/Brent_Images/images/profile/";
 
-    public static String CHRILLEPATH = "C:\\Users\\Christian\\Documents\\NetBeansProjects\\Brent\\web\\images\\profile\\";
-    public static String returnPath = ":8080/Brent/images/profile/";
+    public static String returnPath = ":8080/Brent_Images/images/profile/";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -64,7 +64,7 @@ public class ProfileImageServlet extends HttpServlet {
                 bos.flush();
             }
         } catch (Exception ex) {
-            System.out.println("hooker" + ex);
+            System.out.println("error" + ex);
         }
         //TODO ändra path
         BufferedImage image = ImageIO.read(new File(CHRILLEPATH + "mfile.jpg"));
@@ -73,7 +73,7 @@ public class ProfileImageServlet extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.print(PictureCompressor.resize(image,CHRILLEPATH,returnPath));
         } catch (Exception ex) {
-            System.out.println("kug" +ex);
+            System.out.println("error" +ex);
         }
         
     }

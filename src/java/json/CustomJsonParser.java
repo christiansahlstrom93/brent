@@ -14,6 +14,7 @@ import org.json.JSONObject;
  *
  * @author Christian
  */
+//Custom class for getting correct data from ajax data
 public class CustomJsonParser {
 
     private String key;
@@ -30,6 +31,7 @@ public class CustomJsonParser {
 
     }
 
+    //Setting the map that will contain the data
     private Map<String, String> getStringFromAjaxRequest() {
         String response = "";
         try {
@@ -55,11 +57,13 @@ public class CustomJsonParser {
         return null;
     }
 
+    //Getting string back from object based on key and map
     public String getString() throws JSONException {
         JSONObject obj = new JSONObject(getMap());
         return obj.getString(getKey());
     }
 
+    //init the map
     private static Map<String, String> makeQueryMap(String query) throws UnsupportedEncodingException {
         String[] params = query.split("&");
         Map<String, String> map = new HashMap<String, String>();
