@@ -14,6 +14,7 @@ function adrequest() {
         location = sessionStorage.getItem("citysearch");
     }
 
+    self.showTimePicker = ko.observable(false);
     self.ads = ko.observableArray([]);
     self.ad = ko.observableArray([]);
     self.imageOrientation = ko.observableArray([]);
@@ -149,6 +150,13 @@ function adrequest() {
                     };
 
                     self.sendInterest = function (data) {
+
+                        self.showTimePicker(true);
+
+                        sessionStorage.setItem("mailrecipient", data.email);
+                        document.getElementById('abc').style.display = "block";
+                        document.getElementById('inputpopmail').value = getCookie("email");
+                        
                         if (checkCookie()) {
                             $('.toast').fadeIn(400).delay(3000).fadeOut(400);
 
@@ -176,6 +184,7 @@ function adrequest() {
                     };
 
                     self.sendMail = function (data) {
+                        self.showTimePicker(false);
                         sessionStorage.setItem("mailrecipient", data.email);
                         document.getElementById('abc').style.display = "block";
                         document.getElementById('inputpopmail').value = getCookie("email");
@@ -184,6 +193,20 @@ function adrequest() {
                     self.checkNotifications = function () {
                         self.notesDisplay(true);
                         document.getElementById('noteDiv').style.display = "block";
+                    };
+
+                    self.adLink = function (data) {
+                        div_hide('noteDiv');
+                        console.log(data.adinfo[0].userInfo[0].rateText);
+                        try {
+                            window.scrollTo(0, 0);
+                            self.rateText(data.adinfo[0].userInfo[0].rateText);
+                            handleRates(data.adinfo[0].userInfo[0].rate);
+                            self.showList(false);
+                            self.displayAd(true);
+                            self.ad(data.adinfo[0]);
+                        } catch (ex) {
+                        }
                     };
                 }
                 ko.applyBindings(AdViewModel());
@@ -312,7 +335,7 @@ function check_empty() {
             type: 'POST',
             data: {sender: sender, recepeint: recipient, name: name, msg: msg},
             success: function (response) {
-                div_hide();
+                div_hide('abc');
             }
         });
     }
