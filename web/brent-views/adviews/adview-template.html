@@ -9,14 +9,24 @@
         <script src="../knockout.js"></script>
         <link rel="stylesheet" href="../../css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="adstyles.css">
         <link rel="stylesheet" href="../main/popups.css">
+        <link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css" >
+       <script src="/build/jquery.datetimepicker.full.min.js"></script>
         <script src="adview-model.js"></script>
     </head>
 
     <body id="body">
         <script>
             adrequest();
+        </script>
+
+        <script>
+            $(function () {
+                $("#datepickerFrom").datepicker();
+                $("#datepickerTo").datepicker();
+            });
         </script>
 
         <nav id="nav" class="navbar navbar-default">
@@ -179,6 +189,10 @@
                     <br>
                     <input id="inputpopmail" name="mail" placeholder="Email" type="text">
                     <textarea id="textareapop" name="message" placeholder="Meddelande"></textarea>
+                    <div data-bind="visible: showTimePicker">
+                        <p>Från: <input type="text" id="datepickerFrom"></p>
+                        <p>Till: <input type="text" id="datepickerTo"></p>
+                    </div>
                     <a onclick="check_empty()" id="submitpop">Skicka</a>
                 </form>
             </div>
@@ -200,16 +214,12 @@
                                 <img class="thumbnail adImageweb pull-left" data-bind="attr:{src: userInfo[0].userImageurl}, click: gotoProfile" alt = "">
                                 <!-- /ko -->
                             </a>
-                            <h5 style="margin-left: 5px;" data-bind="text: headline"></h5>
-                            <!-- ko if: isMobile -->
-                            <img class="thumbnail adImagemobile pull-left" style=" margin-left: 5px;width: 50px; height: 50px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
-                            <!-- /ko -->
-                            <!-- ko if: isComputer -->
-                            <img class="thumbnail adImagemobile pull-left" style="width: 70px; height: 70px;" data-bind="attr:{src: adinfo[0].imageURL}" alt = "">
-                            <!-- /ko -->
-                            <a data-bind="text: adinfo[0].title" style="margin-left: 5px;"></a>
-                            <h6 data-bind="text: adinfo[0].preDesc" style="margin-left: 5px;"></h6>
-                            <br>
+
+                            <p style="float: left;">&nbsp;</p>
+                            <p style="float: left;" data-bind="text: headline"></p>
+                            <p style="float: left;">&nbsp;</p>
+                            <a data-bind="text: adinfo[0].title, click: adLink" style="float: left;"></a>
+                            <br><br><br>
                             <button style="float: left; margin-left: 5px;" class="btn btn-danger pull-left">Neka</button>
                             <button style="float: right; margin-right: 5px;" class="btn btn-success pull-right">Godkänn</button>
                             <br><br><br>                               

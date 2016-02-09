@@ -96,6 +96,7 @@ public class AdHandler extends Server {
 
     public JSONArray getAdBasic(int id) {
         SearchFilter searchFilter = new SearchFilter();
+        UserInfo userInfo = new UserInfo();
         JSONArray ja = new JSONArray();
         JSONObject jo;
 
@@ -103,16 +104,25 @@ public class AdHandler extends Server {
             String args = "select * from ads where adid = " + id;
             setStatement(getConn().createStatement());
             setResultSet(getStatement().executeQuery(args));
-
+            userInfo.setConn(getConn());
             while (getResultSet().next()) {
                 jo = new JSONObject();
                 String desc = getResultSet().getString("adtext");
+                int userID = getResultSet().getInt("ownerid");
                 jo.put("title", getResultSet().getString("title"));
                 jo.put("description", desc);
                 jo.put("price", (int) getResultSet().getDouble("price") + ":-");
+                jo.put("location", getResultSet().getString("city"));
                 jo.put("imageURL", getResultSet().getString("imageurl"));
+                jo.put("phone", getResultSet().getString("phonenumber"));
+                jo.put("firstname", getResultSet().getString("firstname"));
+                jo.put("lastname", getResultSet().getString("lastname"));
+                jo.put("email", getResultSet().getString("ownermail"));
                 jo.put("pricetype", getResultSet().getString("pricetyp"));
-
+                jo.put("adid", getResultSet().getString("adid"));
+                jo.put("ownerid", userID);
+                jo.put("userInfo", userInfo.getUserCredentials(userID));
+                
                 if (desc.length() > 10) {
                     jo.put("preDesc", desc.substring(0, 10) + "...");
                 } else {

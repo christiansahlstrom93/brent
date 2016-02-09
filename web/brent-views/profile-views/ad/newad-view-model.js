@@ -50,7 +50,7 @@ function initViewModel() {
                     phone(data.phone);
                     place(data.city);
                     admessage("Skapa en annons");
-                    
+
                     self.turnImage = function () {
                         var className;
                         if (mobilecheck()) {
@@ -94,7 +94,6 @@ function initViewModel() {
                         self.notesDisplay(true);
                         document.getElementById('noteDiv').style.display = "block";
                     };
-                    
                 }
                 ko.applyBindings(NewAdViewModel());
             });

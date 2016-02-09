@@ -57,7 +57,7 @@ public class NotificationHandler extends Server {
             while (getResultSet().next()) {
                 jo = new JSONObject();
                 jo.put("sender", getResultSet().getString("interested"));
-                jo.put("headline", getResultSet().getString("interested") + " vill hyra utav dig!");
+                jo.put("headline", getResultSet().getString("interested") + " vill hyra din ");
                 jo.put("data", getResultSet().getString("date"));
                 jo.put("opened", getResultSet().getBoolean("opened"));
                 jo.put("adid", getResultSet().getInt("adid"));
