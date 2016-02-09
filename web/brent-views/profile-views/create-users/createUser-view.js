@@ -41,6 +41,9 @@ function createUser(imageurl) {
     var matchEmail = false;
     var matchPass = false;
     var matchPerson = false;
+    var validEmail = false;
+    
+
     if (email1 == email2) {
         matchEmail = true;
 
@@ -50,7 +53,17 @@ function createUser(imageurl) {
         document.getElementById('accountSuccess').className = 'alert alert-danger';
         document.getElementById("createSuccess").text = "De angivna epost addresserna matchar inte";
     }
-    if (password1 == password2) {
+    if (validateEmail(email1)) {
+        validEmail = true;
+
+    } else {
+
+        document.getElementById("accountSuccess").style.visibility = 'visible';
+        document.getElementById('accountSuccess').className = 'alert alert-danger';
+        document.getElementById("createSuccess").text = "Den angivna epost addressen är inte av korrekt format";
+    }
+
+    if (password1 == password2 && password1) {
         matchPass = true;
 
     } else {
@@ -70,8 +83,8 @@ function createUser(imageurl) {
 
     }
 
-    if (matchPerson && matchPass && matchEmail && firstName && lastName && personNumber && email1 && email2 && phoneNumber && city
-            && address && postalCode && password1 && password2) {
+    if (validEmail && matchPerson && matchPass && matchEmail && firstName && lastName && personNumber && email1 && email2 && checkPNumber(phoneNumber) && city
+            && address && checkPCode(postalCode) && password1 && password2) {
         $.ajax({
             url: "../../../CreateUserServlet",
             type: 'POST',
@@ -169,6 +182,47 @@ function turnImage() {
 function hasClass(element, cls) {
     return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
 }
+function validateEmail(email1)
+{
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (email1.match(mailformat))
+    {
+        return true;
+    } else
+    {
+        return false;
+    }
+}
+function checkPNumber(phoneNumber){
+    
+    if(!isNaN(phoneNumber && phoneNumber)){
+        
+       return true;
+        
+    }else{
+        document.getElementById("accountSuccess").style.visibility = 'visible';
+        document.getElementById('accountSuccess').className = 'alert alert-danger';
+        document.getElementById("createSuccess").text = "Det angivna telefonnummret är inte av korrekt format";
+        
+        return false;
+    }
+    
+}
+function checkPCode(postalCode){
+    
+    if(!isNaN(postalCode && postalCode)){
+        
+return true;        
+    }else{
+        document.getElementById("accountSuccess").style.visibility = 'visible';
+        document.getElementById('accountSuccess').className = 'alert alert-danger';
+        document.getElementById("createSuccess").text = "Det angivna postnummret är inte av korrekt format";
+        
+        return false;
+    }
+    
+}
+
 
 function getOrientation() {
     var element = document.getElementById('blah');
