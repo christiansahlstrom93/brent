@@ -103,13 +103,13 @@
                         <p>Återupprepa E-post</p>
                         <input placeholder="stuffe@spray.se" id="mail2"  type="text"><br><br>
                         <p>Telefon</p>
-                        <input  id="phone" type="text"><br><br>
+                        <input id="phone" placeholder="Endast siffror" type="text"><br><br>
                         <p>Stad</p>
                         <input  id="city" type="text"><br><br>
                         <p>Address</p>
                         <input  id="address" type="text"><br><br>    
                         <p>Postnummer</p>
-                        <input id="postalcode" type="text"><br><br> 
+                        <input  id="postalcode" placeholder="Endast siffror" type="text"><br><br> 
                         <p>Lösenord</p>
                         <input id="pass1" type="password"><br><br>  
                         <p>Återupprepa lösenord</p>
@@ -143,5 +143,6 @@
             </div>
         </div>
         <br>
+        <input class="btn btn-success pull-right" onclick="createUser('www.kuk.se')" type="submit" id="upload-button" value="Skapa användare"/>
     </body>
 </html>
