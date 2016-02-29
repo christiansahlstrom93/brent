@@ -55,8 +55,9 @@ public class NotificationServlet extends HttpServlet {
                 String email = jsonParser.getString();
                 jsonParser.setKey("id");
                 int id = Integer.parseInt(jsonParser.getString());
-                System.out.println("MAIL " + email + " ID " + id);
-                out.print(adBean.sendNotification(sender, recepeint, id, email));
+                jsonParser.setKey("date");
+                String date = jsonParser.getString();
+                out.print(adBean.sendNotification(sender, recepeint, id, email, date));
             } else {
 
                 try {

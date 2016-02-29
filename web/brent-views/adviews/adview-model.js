@@ -30,6 +30,7 @@ function adrequest() {
     self.notifications = ko.observableArray();
     self.notesDisplay = ko.observable(false);
     self.hasNotes = ko.observable(false);
+    self.noteImage = ko.observable("noteimg");
 
     //check if mobile or computer
     if (mobilecheck()) {
@@ -149,31 +150,13 @@ function adrequest() {
                         window.open("../profile-views/user-view/user-view-template.html", "_self");
                     };
 
-                    self.sendInterest = function (data) {
+                    self.openInterest = function (data) {
 
                         self.showTimePicker(true);
-
+                        setCookie("noteadid", data.adid);
+                        setCookie("notefirstname", data.firstname);
                         sessionStorage.setItem("mailrecipient", data.email);
                         document.getElementById('abc').style.display = "block";
-                        document.getElementById('inputpopmail').value = getCookie("email");
-                        
-                        if (checkCookie()) {
-                            $('.toast').fadeIn(400).delay(3000).fadeOut(400);
-
-                            if (getCookie("email") === data.email) {
-                                $('.toast').text('Du kan inte skicka till dig själv..');
-                            } else {
-                                if (sendNotification(getCookie("username"), data.email, getCookie("email"), data.adid) === 'true') {
-                                    $('.toast').text('Ditt intresse är skickat till ' + data.firstname);
-                                } else {
-                                    $('.toast').text('Du har redan skickat intresse till ' + data.firstname);
-                                }
-                            }
-
-                        } else {
-                            $('.toast').fadeIn(400).delay(3000).fadeOut(400);
-                            $('.toast').text('Du måste vara inloggad för att skicka intresse..');
-                        }
                     };
 
                     //visit profile
@@ -354,6 +337,35 @@ function sendNotification(sender, recipient, mail, id) {
             return response;
         }
     });
+}
+
+function sendInterest() {
+
+    var email = sessionStorage.getItem("mailrecipient");
+    var firstname = getCookie("notefirstname");
+    var adid = getCookie("noteadid");
+    
+    var dateStr = (document.getElementById('date_foo').value + ' till ' + document.getElementById('date_foo2').value);
+
+    if (checkCookie()) {
+        $('.toast').fadeIn(400).delay(3000).fadeOut(400);
+
+        if (getCookie("email") === email) {
+            $('.toast').text('Du kan inte skicka till dig själv..');
+        } else {
+            if (sendNotification(getCookie("username"), email, getCookie("email"), adid, dateStr) === 'true') {
+                $('.toast').text('Ditt intresse är skickat till ' + firstname);
+            } else {
+                $('.toast').text('Du har redan skickat intresse till ' + firstname);
+            }
+        }
+
+    } else {
+        $('.toast').fadeIn(400).delay(3000).fadeOut(400);
+        $('.toast').text('Du måste vara inloggad för att skicka intresse..');
+    }
+
+    div_hide('abc');
 }
 
 function checkNotifications(self) {

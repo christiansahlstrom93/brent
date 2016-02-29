@@ -2,8 +2,6 @@ package business.beans.adhandlers;
 
 import business.beans.javahelpers.Server;
 import business.beans.usercredentials.UserInfo;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,14 +11,11 @@ import org.json.JSONObject;
  */
 public class NotificationHandler extends Server {
 
-    public boolean sendNotification(String s, String rec, int id, String smail) {
-
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-
+    public boolean sendNotification(String s, String rec, int id, String smail, String date) {
+        
         try {
 
-            String args = "select receiver from interests where adid = " + id + "";
+            String args = "select receiver from interests where adid = " + id + " AND opened = " + false;
             setStatement(getConn().createStatement());
             setResultSet(getStatement().executeQuery(args));
             
@@ -30,7 +25,7 @@ public class NotificationHandler extends Server {
             
 
             String query = "INSERT into interests (interested,receiver,date,opened,adid,interestedemail)"
-                    + " VALUES('" + s + "','" + rec + "','" + sdf.format(date) + "'," + false + "," + id + ",'" + smail + "');";
+                    + " VALUES('" + s + "','" + rec + "','" + date + "'," + false + "," + id + ",'" + smail + "');";
             setStatement(getConn().createStatement());
             getStatement().executeUpdate(query);
             return true;
@@ -58,7 +53,7 @@ public class NotificationHandler extends Server {
                 jo = new JSONObject();
                 jo.put("sender", getResultSet().getString("interested"));
                 jo.put("headline", getResultSet().getString("interested") + " vill hyra din ");
-                jo.put("data", getResultSet().getString("date"));
+                jo.put("date", getResultSet().getString("date"));
                 jo.put("opened", getResultSet().getBoolean("opened"));
                 jo.put("adid", getResultSet().getInt("adid"));
                 jo.put("interestedEmail", getResultSet().getString("interestedemail"));
