@@ -21,8 +21,8 @@ public class UserBean implements UserBeanLocal {
 
     //adding user to DB
     @Override
-    public String createUser(String lastname, String firstname, String email, String password, String phonenumber, String address, String city, String areacode, String imgURL, String orientation) {
-        String result = "";
+     public boolean createUser(String lastname, String firstname, String email, String password, String phonenumber, String address, String city, String areacode , String imgURL, String orientation) {
+      boolean result = false;
         try {
             CreateUser c = new CreateUser();
             c.connectToServer();
@@ -66,4 +66,18 @@ public class UserBean implements UserBeanLocal {
 
         return null;
     }
-}
+    @Override
+    public String checkEmail(String email) {
+                String result = "";
+        try {
+            CreateUser c = new CreateUser();
+            c.connectToServer();
+            result = c.emailCheck(email);
+            c.getConn().close();
+        } catch (Exception ex) {
+            Logger.getLogger(AdBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+   }
+
