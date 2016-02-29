@@ -15,8 +15,10 @@ import org.json.JSONArray;
 @Local
 public interface UserBeanLocal {
 
-    String createUser(String username, String firstname, String email, String password, String phonenumber, String address, String city, String areacode, String imgURL, String orientation);
+    boolean createUser(String username, String firstname, String email, String password, String phonenumber, String address, String city, String areacode , String imgURL, String orientation);
 
+    String checkEmail(String email);
+    
     JSONArray getMyPagesInfo(String email);
 
     JSONArray getUserCredentials(String usrName);
