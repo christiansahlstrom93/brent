@@ -79,12 +79,12 @@ public class AdBean implements AdBeanLocal {
     }
 
     @Override
-    public boolean sendNotification(String s, String rec, int id, String smail) {
+    public boolean sendNotification(String s, String rec, int id, String smail, String date) {
         boolean state = false;
         try {
             NotificationHandler notificationHandler = new NotificationHandler();
             notificationHandler.connectToServer();
-            state = notificationHandler.sendNotification(s, rec, id, smail);
+            state = notificationHandler.sendNotification(s, rec, id, smail, date);
             notificationHandler.getConn().close();
         } catch (Exception ex) {
             System.out.println("Fel i bönan " + ex);
