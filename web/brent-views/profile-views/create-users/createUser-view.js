@@ -26,7 +26,8 @@ $(function () {
 
 });
 function createUser(imageurl) {
-
+    //TODO ta väck
+    imageurl = "kuk";
     var firstName = document.getElementById("firstname").value;
     var lastName = document.getElementById("lastname").value;
     var personNumber = document.getElementById("personnumber").value;
@@ -90,19 +91,25 @@ function createUser(imageurl) {
             type: 'POST',
             data: {firstname: firstName, lastname: lastName, mail: email1,
                 phone: phoneNumber, city: city, personnumber: personNumber, address: address, postalcode: postalCode, password: password1,
-                imageurl: imageurl, imgorient: getOrientation()},
+                imageurl: imageurl },
             success: function (response) {
-                if (response == "success") {
+                console.log(response)
+                if (response === "success") {
 
                     document.getElementById("accountSuccess").style.visibility = 'visible';
                     document.getElementById('accountSuccess').className = 'alert alert-success';
                     document.getElementById("createSuccess").text = "Ett aktiveringmail har skickats till din angivna epost";
 
-                } else {
+                } if(response === "fail1") {
 
                     document.getElementById("accountSuccess").style.visibility = 'visible';
                     document.getElementById('accountSuccess').className = 'alert alert-danger';
-                    document.getElementById("createSuccess").text = "Ett fel har uppstått, testa igen om en stund";
+                    document.getElementById("createSuccess").text = "Den angivna emailen är redan registrerad";
+                }if(response === "fail2") {
+
+                    document.getElementById("accountSuccess").style.visibility = 'visible';
+                    document.getElementById('accountSuccess').className = 'alert alert-danger';
+                    document.getElementById("createSuccess").text = "Något gick fel, försök igen senare";
                 }
             },
             error: function (response) {

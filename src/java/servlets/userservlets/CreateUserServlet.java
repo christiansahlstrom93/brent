@@ -86,12 +86,22 @@ public class CreateUserServlet extends HttpServlet {
             System.out.println("************");
             jsonParser.setKey("imageurl");
             String imgURL = jsonParser.getString();
-            jsonParser.setKey("imgorient");
-            String orientation = jsonParser.getString();
-
-            String result = userBean.createUser(lastname,firstname, mail,password, phone,  address,  city,  postalcode
-            ,imgURL,orientation);
-            out.print(result);
+            //TODO fixa orient
+           /* jsonParser.setKey("imgorient");
+            String orientation = jsonParser.getString();*/
+           String orientation = "dd";
+            System.out.println("hej" + userBean.checkEmail(mail+ "kuuuk"));
+            System.out.println("hej");
+            if(!"fail".equals(userBean.checkEmail(mail))){
+                if(userBean.createUser(lastname,firstname, mail,password, phone,  address,  city,  postalcode ,imgURL,orientation)){
+                    out.print("success");
+                }else{
+                    out.print("fail2");
+                }       
+            }
+            else{
+                out.print("fail1");
+            }
         } catch (Exception e) {
             System.out.println(e);
         }

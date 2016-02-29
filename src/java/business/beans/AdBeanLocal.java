@@ -23,7 +23,7 @@ public interface AdBeanLocal {
 
     boolean updateAd(String email, String imageurl, String pricetype, String ownermail, double price, String title, String adText, String firstname, String lastname, String phonenumber, String city, String imgorientation, int adId);
 
-    boolean sendNotification(String s, String rec, int id, String smail);
+    boolean sendNotification(String s, String rec, int id, String smail, String date);
     
     JSONArray getNotifications(String mail);
 
